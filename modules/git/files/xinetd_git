@@ -1,0 +1,19 @@
+##############################################################################
+# This file is mananged by puppet.  Do NOT edit on the server, your changes  #
+# will be blown away on the next puppet run.                                 #
+##############################################################################
+
+# default: off
+# description: The git dæmon allows git repositories to be exported using \
+#       the git:// protocol.
+
+service git
+{
+        disable         = yes
+        socket_type     = stream
+        wait            = no
+        user            = nobody
+        server          = /usr/libexec/git-core/git-daemon
+        server_args     = --base-path=/var/lib/git --export-all --user-path=public_git --syslog --inetd --verbose
+        log_on_failure  += USERID
+}

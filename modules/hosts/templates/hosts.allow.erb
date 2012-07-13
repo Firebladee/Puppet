@@ -1,0 +1,38 @@
+##############################################################################
+# This file is mananged by puppet.  Do NOT edit on the server, your changes  #
+# will be blown away on the next puppet run.                                 #
+##############################################################################
+
+<% case fqdn
+	when /gucedora06.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.57.2. 10.57.4. 10.31.192. 10.31.101.161 10.31.170.<%
+	when /gucedora09.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.57.4. 10.31.192. 10.31.170.<%
+	when /gucedora12.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.57.4. 10.31.192. 10.31.170.<%
+	when /gucedapp07.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 213.249.135.38 10.31.192. 172.25. 10.31.170.<%
+	when /gucedora05.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.57.4. 10.31.101.161 10.31.170.<%
+	when /gucedora08.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.57.4. 10.57.0. 10.31.170.<%
+	when /gucerapp01.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 213.249.135.38 10.58. 10.31.170.<%
+	when /gucerapp02.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 172.18. 172.25. 10.31.170.<%
+	when /gucerapp03.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 172.18. 172.25. 10.31.170.<%
+	when /gucedora15.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.40.1. 10.31.170.<%
+	when /gucedora16.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.40.1. 10.31.170.<%
+	when /gucedapp09.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 213.249.135.38 10.58. 10.31.170.<%
+	when /guceddok01.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.31.170.<%
+	when /gucerdok01.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.31.170.<%
+	else %>sshd : 127.0.0.1 192.168. 213.249.135.38 10.31.192. 10.31.170.<%
+end %>
+<% case fqdn
+	when /gucerapp01.gue1.egalacoral.com/ %>check_mk_agent : 127.0.0.1 192.168.34.204 192.168.165.200 172.18.145.161<%
+	when /gucerapp02.gue1.egalacoral.com/ %>check_mk_agent : 127.0.0.1 192.168.34.204 192.168.165.200 172.18.145.161<%
+	when /gucerapp03.gue1.egalacoral.com/ %>check_mk_agent : 127.0.0.1 192.168.34.204 192.168.165.200 172.18.145.161<%
+	else %>check_mk_agent : 127.0.0.1 192.168.34. 192.168.165. 10.31.192. 172.18.145.161<%
+end %>
+<% case fqdn
+	when /gucedapp07.gue1.egalacoral.com/ %>snmpd : 127.0.0.1 192.168.34.210 192.168.165.215 10.31.192.<%
+	when /gucerapp02.gue1.egalacoral.com/ %>snmpd : 127.0.0.1 192.168.34.210 192.168.165.215 172.25.<%
+	when /gucerapp03.gue1.egalacoral.com/ %>snmpd : 127.0.0.1 192.168.34.210 192.168.165.215 172.25.<%
+	else %>snmpd : 127.0.0.1 192.168.34.210 192.168.165.215<%
+end %>
+<% case fqdn
+	when /gucedapp07.gue1.egalacoral.com/ %>nrpe : 127.0.0.1 192.168.34.204 192.168.165.200 10.31.192.<%
+	else %>nrpe : 127.0.0.1 192.168.34.204 192.168.165.200<%
+end %>

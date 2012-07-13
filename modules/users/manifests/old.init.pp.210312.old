@@ -1,0 +1,7 @@
+# /etc/puppet/modules/users/manifests/init.pp
+
+class users {
+
+#	adduser { fred: uid => '600', gid => 'fred', shell => "/bin/bash", home => "/home/fred", comment => "test", password => '$1$hf8IVsdA$.c.vGDBwiIv0yWQEy1Ovw1', groups => '' }
+
+}

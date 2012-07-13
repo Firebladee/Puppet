@@ -1,0 +1,8 @@
+##############################################################################
+# This file is mananged by puppet.  Do NOT edit on the server, your changes  #
+# will be blown away on the next puppet run.                                 #
+##############################################################################
+
+CREATE DATABASE IF NOT EXISTS <%= mysql_db %> ;
+GRANT <%= mysql_privileges %> ON <%= mysql_db %>.* TO '<%= mysql_user %>'@'<%= mysql_host %>' IDENTIFIED BY '<%= mysql_password %>';
+FLUSH PRIVILEGES ;

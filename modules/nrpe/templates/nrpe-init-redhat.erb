@@ -1,0 +1,10 @@
+##############################################################################
+# This file is mananged by puppet.  Do NOT edit on the server, your changes  #
+# will be blown away on the next puppet run.                                 #
+##############################################################################
+
+<% if scope.lookupvar('nrpe::params::use_ssl') == "yes" -%>
+NRPE_SSL_OPT=""
+<% else -%>
+NRPE_SSL_OPT="-n"
+<% end %>

@@ -1,0 +1,61 @@
+# /etc/puppet/modules/yum/manifests/repo/centos.pp
+
+class yum::repo::centos {
+	yum::managed_yumrepo {base:
+		descr => 'CentOS-$releasever - Base',
+#		mirrorlist => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os',
+		baseurl => 'http://mirror.centos.org/centos/$releasever/os/$basearch/',
+		enabled => 1,
+		gpgcheck => 1,
+		gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6',
+		priority => 1,
+	}
+
+	yum::managed_yumrepo {updates:
+		descr => 'CentOS-$releasever - Updates',
+#		mirrorlist => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates',
+		baseurl => 'http://mirror.centos.org/centos/$releasever/updates/$basearch/',
+		enabled => 1,
+		gpgcheck => 1,
+		gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6',
+		priority => 1,
+	}
+
+#	yum::managed_yumrepo {addons:
+#		descr => 'CentOS-$releasever - Addons',
+##		mirrorlist => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=addons',
+#		enabled => 1,
+#		gpgcheck => 1,
+#		gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-5',
+#		priority => 1,
+#	}
+
+	yum::managed_yumrepo {extras:
+		descr => 'CentOS-$releasever - Extras',
+#		mirrorlist => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras',
+		baseurl => 'http://mirror.centos.org/centos/$releasever/extras/$basearch/',
+		enabled => 1,
+		gpgcheck => 1,
+		gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6',
+		priority => 1,
+	}
+
+	yum::managed_yumrepo {centosplus:
+		descr => 'CentOS-$releasever - Centosplus',
+#		mirrorlist => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus',
+		baseurl => 'http://mirror.centos.org/centos/$releasever/centosplus/$basearch/',
+		enabled => 1,
+		gpgcheck => 1,
+		gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6',
+		priority => 2,
+	}
+
+	yum::managed_yumrepo {contrib:
+		descr => 'CentOS-$releasever - Contrib',
+#		mirrorlist => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=contrib',
+		baseurl => 'http://mirror.centos.org/centos/$releasever/contrib/$basearch/',
+		gpgcheck => 1,
+		gpgkey => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-5',
+		priority => 10,
+	}
+}
