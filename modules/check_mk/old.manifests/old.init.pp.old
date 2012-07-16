@@ -1,0 +1,146 @@
+# /etc/puppet/modules/check_mk/manifests/init.pp
+
+# check_mk::server still under construction - do not use
+# Almost there, does not auto add new clients.
+# New update to allow working under omd
+
+class check_mk::server {
+
+	require check_mk::params
+	require check_mk::dir
+
+	$check_mk_server_file = "check_mk-1.1.12p3.tar.gz"
+	$check_mk_server_flag = "/var/lock/check_mk_server"
+	$check_mk_server_version = "check_mk-1.1.12p3"
+
+	package { "gcc-c++":	ensure => latest;
+		  mod_python:	ensure => latest;
+	}
+
+	file { "/root/.check_mk_setup.conf":
+		ensure => present,
+		path => "/root/.check_mk_setup.conf",
+		source => "puppet:///check_mk/check_mk_setup.conf",
+	}
+
+	file { "/tmp/$check_mk_server_file":
+		ensure => present,
+		path => "/tmp/$check_mk_server_file",
+		source => "puppet:///check_mk/check_mk_server.tar.gz"
+	}
+
+#	exec { "check_mk_server":
+#		command => "'/bin/bash -c "cd /tmp"'; tar -zxvf $check_mk_server_file;'/bin/bash -c "cd check*"'; ./setup.sh --yes; /bin/touch $check_mk_server_flag",
+#		onlyif => "test ! -f $check_mk_server_flag",
+#		require => File["/root/.check_mk_setup.conf", "/tmp/$check_mk_server_file"],
+#	}
+
+	exec { "tar -zxvf /tmp/$check_mk_server_file":
+		cwd => "/tmp",
+		creates => "/tmp/$check_mk_server_version",
+		onlyif => "test ! -f $check_mk_server_flag",
+	}
+		
+	exec { "./setup.sh --yes; /bin/touch $check_mk_server_flag":
+		cwd => "/tmp/$check_mk_server_version",
+		onlyif => "test ! -f $check_mk_server_flag",
+		require => [exec["./setup.sh --yes; /bin/touch $check_mk_server_flag"],Package["gcc-c++"]],
+        }
+
+#	check_mk::client <<| tag == 'check_mk::$deployment' |>> {
+#	#	command => "check_mk -I $fqdn",
+#	}
+
+#	check_mk_client <<||>>
+
+	File<<| tag == 'check_mk_remote' |>>
+
+#	file { "/etc/check_mk/agents":
+#		ensure => directory,
+#		notify => Exec["/etc/check_mk/auto/read.sh"],
+#	}
+
+#	file { "/etc/check_mk/auto":
+#		ensure => directory
+#	}
+
+	file { "/etc/check_mk/auto/read.sh":
+		ensure	=> present,
+		mode	=> 755,
+		source	=> "puppet:///check_mk/read.sh",
+#		require	=> Exec["./setup.sh --yes; /bin/touch $check_mk_server_flag"]
+	}
+
+	exec { "/etc/check_mk/auto/read.sh":
+		cwd => "/etc/check_mk/agents/main",
+		subscribe => File["/etc/check_mk/agents/main"],
+		refreshonly => true,
+		require => File["/etc/check_mk/auto/read.sh"]
+	}
+
+	# check_mk parents
+
+	File <<| tag == 'check_mk_remote_parents' |>>
+
+	exec { "check_mk_parents":
+		command => "check_mk -O",
+		refreshonly => true,
+	}
+
+	file { "/etc/check_mk/conf.d/parents":
+		ensure	=> directory,
+		purge	=> true,
+		recurse	=> true,
+		notify	=> Exec["check_mk_parents"],
+	}
+}
+
+class check_mk::agent {
+
+	require check_mk::params
+
+	$check_mk_agent = "check_mk-agent-1.1.12p3-1.noarch.rpm"
+
+	package { xinetd:    			ensure => latest;
+		  nagios-plugins-setuid:	ensure => latest;
+}
+
+	file { "/usr/lib/nagios/plugins/check_icmp":
+		mode	=> 4755,
+		require => Package["nagios-plugins-setuid"],
+	}
+
+	file { "/tmp/$check_mk_agent":
+		ensure => present,
+		path => "/tmp/$check_mk_agent",
+		source => "puppet:///check_mk/$check_mk_agent"
+	}
+
+	exec { "rpm -i /tmp/$check_mk_agent":
+		cwd => "/tmp",
+		creates => "/usr/bin/check_mk_agent",
+		require => Package["xinetd"]
+	}
+
+#	@@check_mk_client { "get $fqdn":
+#		host => $fqdn,
+#		tag => "check_mk::$deployment";
+#	}
+
+	@@file {
+		"/etc/check_mk/agents/main/${hostname}":
+		ensure => file, content => "\n",
+#		alias => "check_mk-agent-${name}",
+		tag => 'check_mk_remote'
+	}
+
+}
+
+# still testing
+class check_mk::oracle {
+	file { "/usr/lib/check_mk_agent/plugins/mk_oracle":
+		mode	=> 755,
+		ensure	=> present,
+		source	=> "puppet:///check_mk/mk_oracle"
+	}
+}
