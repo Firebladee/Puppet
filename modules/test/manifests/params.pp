@@ -17,8 +17,13 @@ class test::params {
 		default	=> $::test_parents,
 	}
 
-	$check_mk_tags		= $::test_check_mk_tags ? {
+	$check_mk_tags	= $::test_check_mk_tags ? {
 		''	=> '',		# Default value
 		default	=> $::test_check_mk_tags,
+	}
+
+	$check_mk_alias		= $::test_check_mk_alias ? {
+		''	=> '',		# Default value
+		default	=> $::test_check_mk_alias,
 	}
 }

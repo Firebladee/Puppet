@@ -18,3 +18,9 @@ host_groups += [
 <% end -%>
 ]
 <% end -%>
+
+<% if !check_mk_alias.empty? -%>
+extra_host_conf['alias'] += [
+( '<%= check_mk_alias %>', ['<%= hostname %>'], ),
+]
+<% end -%>

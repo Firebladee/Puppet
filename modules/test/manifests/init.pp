@@ -5,6 +5,7 @@ class test (
 	$install	= $test::params::install,
 	$parents	= $test::params::parents,
 	$check_mk_tags	= $test::params::check_mk_tags,
+	$check_mk_alias	= $test::params::check_mk_alias,
 	) inherits test::params {
 
 	if $test::install == 'agent' or $test::install == 'server' {
