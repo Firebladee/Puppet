@@ -1,0 +1,26 @@
+##############################################################################
+# This file is mananged by puppet.  Do NOT edit on the server, your changes  #
+# will be blown away on the next puppet run.                                 #
+##############################################################################
+
+production:
+  database: <%= scope.lookupvar('puppetdashboard::db_name') %>
+  username: <%= scope.lookupvar('puppetdashboard::db_user') %>
+  password: <%= scope.lookupvar('puppetdashboard::db_password') %>
+  encoding: utf8
+  adapter: mysql
+
+development:
+  database: dashboard_development
+  username: dashboard
+  password:
+  encoding: utf8
+  adapter: mysql
+
+test:
+  database: dashboard_test
+  username: dashboard
+  password:
+  encoding: utf8
+  adapter: mysql
+
