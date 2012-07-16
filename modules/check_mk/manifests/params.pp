@@ -21,4 +21,9 @@ class check_mk::params {
 		''	=> '',		# Default value
 		default	=> $::check_mk_check_mk_tags,
 	}
+
+	$check_mk_alias         = $::check_mk_check_mk_alias ? {
+                ''      => '',          # Default value
+                default => $::check_mk_check_mk_alias,
+        }
 }

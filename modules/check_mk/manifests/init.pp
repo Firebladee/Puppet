@@ -5,6 +5,7 @@ class check_mk (
 	$install	= $check_mk::params::install,
 	$parents	= $check_mk::params::parents,
 	$check_mk_tags	= $check_mk::params::check_mk_tags,
+	$check_mk_alias = $test::params::check_mk_alias,
 	) inherits check_mk::params {
 
 	if $check_mk::install == 'agent' or $check_mk::install == 'server'{

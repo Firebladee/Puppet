@@ -6,6 +6,8 @@
 # Put your host names here
 # all_hosts = [ 'localhost' ]
 define_hostgroups = True
+generate_hostconf = True
+aggregate_check_mk = True
 
 all_hosts = [ ]
 
@@ -15,7 +17,12 @@ check_parameters = [
 
 ]
 
-filesystem_default_levels = { 
+filesystem_default_levels = {
 	"trend_perc" : (20,30),
-	"trend_timeleft" : (48,24), }
+	"trend_timeleft" : (48,24),
+}
+
+extra_host_conf['alias'] = [
+        ( 'Puppet server', ['puppet'], ),
+]
 
