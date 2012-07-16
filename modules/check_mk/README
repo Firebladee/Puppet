@@ -8,9 +8,23 @@ Usage
 
 Clients
 TO add a new agent.
-class { "check_mk:
+class { "check_mk":
 	install		=> "agent",
 	omd_site	=> "ALL",
+}
+
+To add parents
+class { "check_mk":
+	install		=> "agent",
+	omd_site	=> "ALL",
+	parents		=> "172.18.145.11"
+}
+
+To add tags
+class { "check_mk":
+	install		=> "agent",
+	omd_site	=> ["ALL", "DEV2"],
+	check_mk_tags	=> ["SSH", "Management"]
 }
 
 Server
