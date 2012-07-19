@@ -1,4 +1,4 @@
-# /etc/puppet/modules/yum/manifests/repo/puppetlabs.pp
+# /etc/puppet/modules/yum/manifests/repo/spacewalk-client.pp
 
 class yum::repo::spacewalk-client {
 	yum::managed_yumrepo { spacewalk-client:
