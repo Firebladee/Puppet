@@ -124,6 +124,10 @@ define check_mk_server {
                 ensure  => present,
                 source  => "puppet:///check_mk/main.mk"
         }
+
+	# Add site to cron.allow
+
+	# Add site to access.conf
 }
 
 define check_mk_parents {
