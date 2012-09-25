@@ -1,0 +1,17 @@
+# File Managed by Puppet
+[database]
+<% if scope.lookupvar('puppetdb::db_type') == "hsqldb" -%>
+classname = org.hsqldb.jdbcDriver
+subprotocol = hsqldb
+subname = file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true
+<% end -%>
+<% if scope.lookupvar('puppetdb::db_type') == "postgresql" -%>
+classname = org.postgresql.Driver
+subprotocol = postgresql
+subname = //<%= scope.lookupvar('puppetdb::db_host') %>:<%= scope.lookupvar('puppetdb::db_port') %>/<%= scope.lookupvar('puppetdb::db_name') %>
+username = <%= scope.lookupvar('puppetdb::db_user') %>
+password = <%= scope.lookupvar('puppetdb::db_password') %>
+<% end -%>
+
+# How often (in minutes) to compact the database
+# gc-interval = 60
