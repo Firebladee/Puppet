@@ -1,6 +1,7 @@
 #!/bin/bash
 
 loc="/app/geneity/logs"
+newloc="/app/logs"
 ROOT_UID=0
 E_XCD=86
 E_NOTROOT=87
@@ -13,8 +14,13 @@ then
 fi
 
 cd $loc || {
-	echo "Cannot change to $loc " >&2
-	exit $E_XCD;
+	echo "Cannot change to $loc, trying $newloc " >&2
+#	exit $E_XCD;
+	cd $newloc || {
+                echo "Cannot change to $loc or $newloc " >&2
+                exit $E_XCD;
+        }
+	loc=$newloc
 }
 
 du -c --max-depth=1 | while read size filename

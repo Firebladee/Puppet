@@ -78,6 +78,15 @@ define check_mk_agent1 (
 		path => "/tmp/${omd_site}",
 		content => template("test/main.erb"),
 	}
+
+	augeas { "check_mk_cron.allow" :
+		context => "/files/etc/cron.allow",
+#		changes => "set line[last()+1] $name",
+		changes	=> "set 1[last()+1] $name",
+#		onlyif  => "match /files/etc/cron.allow/* include ALL",
+		onlyif	=> "match *[.='$name'] not_include $name",
+#		onlyif	=> "get 1[.='ALL'] == ALL",
+        }
 }
 
 define check_mk_server1 {
@@ -131,6 +140,11 @@ define check_mk_server1 {
         }
 
 	# Add site to cron.allow
+	augeas { "check_mk_cron.allow" :
+		context	=> "/files/etc/cron.allow",
+		changes	=> "set line[last()+1] $name",
+		onlyif	=> "match /* $name != $name",
+	}
 
         # Add site to access.conf
 

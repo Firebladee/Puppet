@@ -23,7 +23,7 @@ restrict -6 ::1
 # server 0.pool.ntp.org
 
 # We synchronise from the following
-<% scope.lookupvar('ntp::params::ntp_server').each do |ntp| %>server <%= ntp %>
+<% scope.lookupvar('ntp::params::ntp_server').each do |ntp| %>server <%= ntp %> iburst
 <% end %>
 
 #broadcast 192.168.1.255 key 42		# broadcast server

@@ -19,8 +19,10 @@ class ntp::params  {
 #(add here module specific internal variables)
 
 	$ntp_server = $domain ? {
-		'gue1.egalacoral.com' 	=> ["192.168.165.208", "192.168.165.209"] ,
-		default			=> ["10.26.1.10", "10.26.1.11"] ,
+		'gue1.egalacoral.com' 	=> ["192.168.165.208", "192.168.165.209"],
+		'bar1.egalacoral.com'	=> ["172.18.134.208", "172.18.134.209"],
+		''			=> ["10.26.1.10", "10.26.1.11"],
+		default			=> ["10.26.1.10", "10.26.1.11"],
 	}
 
 ## MODULE INTERNAL VARIABLES

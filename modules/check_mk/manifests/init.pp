@@ -14,7 +14,7 @@ class check_mk (
         	include xinetd
 
 	        $check_mk_agent = "check_mk-agent-1.1.12p3-1.noarch.rpm"
-        	$omd_site_home  = "/opt/omd/sites/$omd_site"
+        	$omd_site_home = "/opt/omd/sites/$omd_site"
 	        $check_mk_location = "$omd_site_home/etc/check_mk"
 	        $check_mk_agent_location = "$check_mk_location/agents"
 
@@ -36,13 +36,13 @@ class check_mk (
 	        }
 
         	file { "/tmp/$check_mk_agent":
-                	ensure => present,
-	                path => "/tmp/$check_mk_agent",
-        	        source => "puppet:///check_mk/$check_mk_agent"
+                	ensure 	=> present,
+	                path	=> "/tmp/$check_mk_agent",
+        	        source 	=> "puppet:///check_mk/$check_mk_agent"
 	        }
 
         	exec { "rpm -i /tmp/$check_mk_agent":
-                	cwd => "/tmp",
+                	cwd 	=> "/tmp",
 	                creates => "/usr/bin/check_mk_agent",
         	        require => Package["xinetd"]
 	        }

@@ -1,6 +1,9 @@
 # /etc/puppet/modules/yum/manifests/prerequisites.pp
 
 class yum::prerequisites {
+
+	$lsbmajdistrelease = regsubst($operatingsystemrelease, '([^.]*)[.].*', '\1')
+
 	package { "yum-priorities":
 		name => $lsbmajdistrelease ? {
 			5 => "yum-priorities",
