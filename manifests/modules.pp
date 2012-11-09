@@ -1,0 +1,16 @@
+# /etc/puppet/manifests/modules.pp
+
+import "sudo"
+import "yum"
+import "icinga"
+import "mysql"
+import "apache"
+import "netinstall"
+import "nrpe"
+#import "check_mk"
+import "sqlplus"
+import "users"
+import "ntp"
+import "splunk"
+#import "stdlib42"
+import "common"

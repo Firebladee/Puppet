@@ -38,6 +38,7 @@ class yum {
 		}
 
 		redhat: {
+			include yum::repo::redhat
 			if $yum::params::update == "cron" { include yum::cron }
 			if $yum::params::update == "updatesd" { include yum::updatesd }
 			if $yum::params::extrarepo =~ /epel/ { include yum::repo::epel }

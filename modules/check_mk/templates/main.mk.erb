@@ -1,0 +1,52 @@
+##############################################################################
+# This file is mananged by puppet.  Do NOT edit on the server, your changes  #
+# will be blown away on the next puppet run.                                 #
+##############################################################################
+
+# Put your host names here
+# all_hosts = [ 'localhost' ]
+define_hostgroups = True
+generate_hostconf = True
+aggregate_check_mk = True
+define_servicegroups = True
+
+all_hosts = [ ]
+
+check_parameters = [
+
+( {"levels":(90, 95)}, ALL_HOSTS, [ "fs_/" ] ),
+
+]
+
+filesystem_default_levels = {
+	"trend_perc" : (20,30),
+	"trend_timeleft" : (48,24),
+}
+
+extra_host_conf['alias'] = [
+        ( 'Puppet server', ['puppet'], ),
+]
+
+
+extra_nagios_conf += r"""
+
+#'notify-host-by-email' command definition
+define command{
+        command_name    notify-host-by-email
+        command_line    /omd/sites/<%= name %>/bin/nagios_send_host_mail.pl -f html -u -r "$CONTACTEMAIL$"
+        }
+
+# 'notify-host-by-email' command definition
+define command{
+        command_name    notify-service-by-email
+        command_line    /omd/sites/<%= name %>/bin/nagios_send_service_mail.pl -f html -u -r "$CONTACTEMAIL$"
+        }
+"""
+
+extra_service_conf["max_check_attempts"]=[
+        ("3",ALL_HOSTS,"Check_MK"),
+]
+
+extra_service_conf["normal_check_interval"]=[
+	("300",ALL_HOSTS,"yum"),
+]

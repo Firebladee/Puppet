@@ -122,8 +122,49 @@ define check_mk_server {
                 owner   => "${name}",
                 group   => "${name}",
                 ensure  => present,
-                source  => "puppet:///check_mk/main.mk"
+                content => template("check_mk/main.mk.erb"),
         }
+
+	file { "$check_mk_location/conf.d/conf-contact.mk":
+                path    => "$check_mk_location/conf.d/conf-contact.mk",
+                mode    => 644,
+                owner   => "${name}",
+                group   => "${name}",
+                ensure  => present,
+                source  => "puppet:///check_mk/conf-contact.mk"
+        }
+
+	file { "$check_mk_location/conf.d/conf-notification.mk":
+                path    => "$check_mk_location/conf.d/conf-notification.mk",
+                mode    => 644,
+                owner   => "${name}",
+                group   => "${name}",
+                ensure  => present,
+                source  => "puppet:///check_mk/conf-notification.mk"
+        }
+
+	file { "$omd_site_home$/etc/apache/conf.d/auth.conf":
+                path    => "$omd_site_home/etc/apache/conf.d/auth.conf",
+                mode    => 644,
+                owner   => "${name}",
+                group   => "${name}",
+                ensure  => present,
+                content	=> template("check_mk/auth.conf.erb"),
+        }
+
+	exec { "omd restart ${name} apache":
+		subscribe	=> File["$omd_site_home$/etc/apache/conf.d/auth.conf"],
+		refreshonly	=> true
+	}
+
+	file { "$omd_site_home$/etc/nagios/conf.d/timeperiods.cfg":
+		path	=> "$omd_site_home/etc/nagios/conf.d/timeperiods.cfg",
+		mode    => 644,
+                owner   => "${name}",
+                group   => "${name}",
+                ensure  => present,
+		source  => "puppet:///check_mk/timeperiods.cfg",
+	}
 
 	# Add site to cron.allow
 

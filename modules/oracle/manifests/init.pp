@@ -87,7 +87,7 @@ class oracle {
 	}
 
 	users::add { oracle: 
-		uid	=> '600',
+		uid	=> '500',
 		gid	=> 'oracle',
 		shell	=> "/bin/bash",
 		home	=> "/home/oracle",

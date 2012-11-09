@@ -19,9 +19,10 @@
 	when /guceddok01.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.31.170.<%
 	when /gucerdok01.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.31.170.<%
 	when /gucedapp02.gue1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 172.25. 10.31.170.<%
-	when /wkse14t1xora01.wok1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.26.30. 10.31. 10.64. 172.25. 172.18.<%
+	when /wkse14t1xora01.wok1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.26.30. 10.31. 10.64. 172.25. 172.18. 10.26.96.4<%
 	when /wkse14t1xssbt01.wok1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.26.30. 10.31. 10.64. 10.30.158.<%
-	else %>sshd : 127.0.0.1 192.168. 10.31.170. 10.31.171.<%
+	when /wkse14t1xobi01.wok1.egalacoral.com/ %>sshd : 127.0.0.1 192.168. 10.26.30. 10.31. 10.64. 172.25. 172.18. 10.26.96.3 10.26.96.4<%
+	else %>sshd : 127.0.0.1 192.168. 192.168.165. 10.31.170. 10.31.171.<%
 end %>
 <% case fqdn
 	when /gucerapp01.gue1.egalacoral.com/ %>check_mk_agent : 127.0.0.1 192.168.34.204 192.168.165.200 172.18.145.161 10.31.171.7<%
@@ -39,7 +40,8 @@ end %>
 end %>
 <% case fqdn
 	when /wkse14t1xssbt01.wok1.egalacoral.com/ %>nrpe : 127.0.0.1 192.168.165. 10.31.171. 10.64.84.<%
-	else %>nrpe : 127.0.0.1 192.168.34.204 192.168.165.200<%
+	when /wkse14t1xobi01.wok1.egalacoral.com/ %>nrpe : 127.0.0.1 192.168.165. 10.31.171. 10.64.84.<%
+	else %>nrpe : 127.0.0.1 192.168.34. 192.168.165.<%
 end %>
 <% case fqdn
 	when /wkse14t1xssbt01.wok1.egalacoral.com/ %>rsync : 10.241. 10.192. 10.193. 172.18.193. 10.26.111.4 10.26.96.251<%
