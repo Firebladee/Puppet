@@ -1,144 +1,167 @@
 # Class: postgresql::params
 #
-# This class defines default parameters used by the main module class postgresql
-# Operating Systems differences in names and paths are addressed here
+#   The postgresql configuration settings.
 #
-# == Variables
+# Parameters:
 #
-# Refer to postgresql class for the variables defined here.
+# Actions:
 #
-# == Usage
+# Requires:
 #
-# This class is not intended to be used directly.
-# It may be imported or inherited by other classes
+# Sample Usage:
 #
-class postgresql::params {
 
-  # Calculate OS version (without using lsb facts)
-  $ossplit=split($::operatingsystemrelease, '[.]')
-  $osver=$ossplit[0]
+# TODO: add real docs
 
-  ### Module's specific parameters
-  $initdbcommand = $::operatingsystem ? {
-    default => 'service postgresql initdb',
+# This class allows you to use a newer version of postgres, rather than your
+# system's default version.
+#
+# If you want to do that, note that it is important that you use the '->',
+# or a before/require metaparameter to make sure that the `params`
+# class is evaluated before any of the other classes in the module.
+#
+# Also note that this class includes the ability to automatically manage
+# the yumrepo resource.  If you'd prefer to manage the repo yourself, simply pass
+# 'false' or omit the 'manage_repo' parameter--it defaults to 'false'.  You will
+# still need to use the 'params' class to specify the postgres version
+# number, though, in order for the other classes to be able to find the
+# correct paths to the postgres dirs.
+
+class postgresql::params(
+  $version             = $::postgres_default_version,
+  $manage_package_repo = false,
+  $package_source      = undef,
+  $locale              = undef,
+  $charset             = 'UTF8'
+) {
+  $user                         = 'postgres'
+  $group                        = 'postgres'
+  $ip_mask_deny_postgres_user   = '0.0.0.0/0'
+  $ip_mask_allow_all_users      = '127.0.0.1/32'
+  $listen_addresses             = 'localhost'
+  $ipv4acls                     = []
+  $ipv6acls                     = []
+  # TODO: figure out a way to make this not platform-specific
+  $manage_redhat_firewall       = false
+
+
+  if ($manage_package_repo) {
+      case $::osfamily {
+        'RedHat': {
+          $rh_pkg_source = pick($package_source, 'yum.postgresql.org')
+
+          case $rh_pkg_source {
+            'yum.postgresql.org': {
+              class { 'postgresql::package_source::yum_postgresql_org':
+                version => $version
+              }
+            }
+
+            default: {
+              fail("Unsupported package source '${rh_pkg_source}' for ${::osfamily} OS family. Currently the only supported source is 'yum.postgresql.org'")
+            }
+          }
+        }
+
+        'Debian': {
+          class { 'postgresql::package_source::apt_postgresql_org': }
+        }
+
+        default: {
+          fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} currently only supports osfamily RedHat and Debian")
+        }
+      }
+    }
+
+
+  # This is a bit hacky, but if the puppet nodes don't have pluginsync enabled,
+  # they will fail with a not-so-helpful error message.  Here we are explicitly
+  # verifying that the custom fact exists (which implies that pluginsync is
+  # enabled and succeeded).  If not, we fail with a hint that tells the user
+  # that pluginsync might not be enabled.  Ideally this would be handled directly
+  # in puppet.
+  if ($::postgres_default_version == undef) {
+    fail "No value for postgres_default_version facter fact; it's possible that you don't have pluginsync enabled."
   }
 
-  $configfilehba = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => '/etc/postgresql/8.4/main/pg_hba.conf',
-    default => '/var/lib/pgsql/data/pg_hba.conf',
+  case $::operatingsystem {
+    default: {
+      $service_provider = undef
+    }
   }
 
-  ### Application related parameters
+  # Amazon Linux's OS Family is 'Linux', operating system 'Amazon'.
+  case $::osfamily {
+    'RedHat', 'Linux': {
+      $needs_initdb             = true
+      $firewall_supported       = true
+      $persist_firewall_command = '/sbin/iptables-save > /etc/sysconfig/iptables'
 
-  $package = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/       => 'postgresql-8.4',
-    /(?i:RedHat|Centos|Scientific)/ => $osver ? {
-      5       => 'postgresql84-server',
-      default => 'postgresql-server',
-    },
-    default                         => 'postgresql',
+      if $version == $::postgres_default_version {
+        $client_package_name = 'postgresql'
+        $server_package_name = 'postgresql-server'
+        $devel_package_name  = 'postgresql-devel'
+        $java_package_name   = 'postgresql-jdbc'
+        $service_name = 'postgresql'
+        $bindir       = '/usr/bin'
+        $datadir      = '/var/lib/pgsql/data'
+        $confdir      = $datadir
+      } else {
+        $version_parts       = split($version, '[.]')
+        $package_version     = "${version_parts[0]}${version_parts[1]}"
+        $client_package_name = "postgresql${package_version}"
+        $server_package_name = "postgresql${package_version}-server"
+        $devel_package_name  = "postgresql${package_version}-devel"
+        $java_package_name   = "postgresql${package_version}-jdbc"
+        $service_name = "postgresql-${version}"
+        $bindir       = "/usr/pgsql-${version}/bin"
+        $datadir      = "/var/lib/pgsql/${version}/data"
+        $confdir      = $datadir
+      }
+
+      $service_status = undef
+    }
+
+    'Debian': {
+      $needs_initdb             = false
+      $firewall_supported       = false
+      # TODO: not exactly sure yet what the right thing to do for Debian/Ubuntu is.
+      #$persist_firewall_command = '/sbin/iptables-save > /etc/iptables/rules.v4'
+
+
+      case $::operatingsystem {
+        'Debian': {
+            $service_name = 'postgresql'
+        }
+
+        'Ubuntu': {
+          # thanks, ubuntu
+          if($::lsbmajdistrelease == '10' and !$manage_package_repo) {
+            $service_name = "postgresql-${version}"
+          } else {
+            $service_name = 'postgresql'
+          }
+        }
+      }
+
+      $client_package_name = "postgresql-client-${version}"
+      $server_package_name = "postgresql-${version}"
+      $devel_package_name  = 'libpq-dev'
+      $java_package_name   = 'libpostgresql-jdbc-java'
+      $bindir              = "/usr/lib/postgresql/${version}/bin"
+      $datadir             = "/var/lib/postgresql/${version}/main"
+      $confdir             = "/etc/postgresql/${version}/main"
+      $service_status      = "/etc/init.d/${service_name} status | /bin/egrep -q 'Running clusters: .+|online'"
+    }
+
+    default: {
+      fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} currently only supports osfamily RedHat and Debian")
+    }
   }
 
-  $service = $::operatingsystem ? {
-    /(?i:Debian|Mint)/        => 'postgresql',
-    /(?i:Ubuntu)/             => $::operatingsystemrelease ? {
-      '12.04' => 'postgresql',
-      default => 'postgresql-8.4',
-    },
-    default                   => 'postgresql',
-  }
-
-  $service_status = $::operatingsystem ? {
-    default => true,
-  }
-
-  $process = $::operatingsystem ? {
-    default => 'postgres',
-  }
-
-  $process_args = $::operatingsystem ? {
-    default => '',
-  }
-
-  $process_user = $::operatingsystem ? {
-    default => 'postgres',
-  }
-
-  $config_dir = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => '/etc/postgresql/8.4/main',
-    default                   => '/var/lib/pgsql/data',
-  }
-
-  $config_file = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => '/etc/postgresql/8.4/main/postgresql.conf',
-    default                   => '/var/lib/pgsql/data/postgresql.conf',
-  }
-
-  $config_file_mode = $::operatingsystem ? {
-    default => '0600',
-  }
-
-  $config_file_owner = $::operatingsystem ? {
-    default => 'postgres',
-  }
-
-  $config_file_group = $::operatingsystem ? {
-    default => 'postgres',
-  }
-
-  $config_file_init = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => '/etc/default/postgresql',
-    default                   => '/etc/sysconfig/pgsql',
-  }
-
-  $pid_file = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => '/var/run/postgresql/8.4-main.pid',
-    default                   => '/var/lib/pgsql/data/postmaster.pid',
-  }
-
-  $data_dir = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => '/var/lib/postgresql/8.4/main',
-    default                   => '/var/lib/pgsql',
-  }
-
-  $log_dir = $::operatingsystem ? {
-    /(?i:RedHat|Centos|Scientific)/ => '/var/lib/pgsql/data/pg_log',
-    default                         => '/var/log/postgresql',
-  }
-
-  $log_file = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/       => '/var/log/postgresql/postgresql-8.4-main.log',
-    /(?i:RedHat|Centos|Scientific)/ => '/var/lib/pgsql/data/pg_log/postgresql*.log',
-    default                         => '/var/lib/pgsql/data/pg_log/postgresql*.log',
-  }
-
-  $port = '5432'
-  $protocol = 'tcp'
-
-  # General Settings
-  $my_class = ''
-  $source = ''
-  $source_dir = ''
-  $source_dir_purge = false
-  $template = ''
-  $options = ''
-  $service_autorestart = true
-  $version = 'present'
-  $absent = false
-  $disable = false
-  $disableboot = false
-
-  ### General module variables that can have a site or per module default
-  $monitor = false
-  $monitor_tool = ''
-  $monitor_target = '127.0.0.1'
-  $firewall = false
-  $firewall_tool = ''
-  $firewall_src = '0.0.0.0/0'
-  $firewall_dst = $::ipaddress
-  $puppi = false
-  $puppi_helper = 'standard'
-  $debug = false
-  $audit_only = false
-
+  $initdb_path          = "${bindir}/initdb"
+  $createdb_path        = "${bindir}/createdb"
+  $psql_path            = "${bindir}/psql"
+  $pg_hba_conf_path     = "${confdir}/pg_hba.conf"
+  $postgresql_conf_path = "${confdir}/postgresql.conf"
 }

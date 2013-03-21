@@ -1,121 +1,87 @@
 # Class: puppetdb::params
 #
-# This class defines default parameters used by the main module class puppetdb
-# Operating Systems differences in names and paths are addressed here
+#   The puppetdb configuration settings.
 #
-# == Variables
+# Parameters:
 #
-# Refer to puppetdb class for the variables defined here.
+# Actions:
 #
-# == Usage
+# Requires:
 #
-# This class is not intended to be used directly.
-# It may be imported or inherited by other classes
+# Sample Usage:
 #
 class puppetdb::params {
+  $listen_address            = 'localhost'
+  $listen_port               = '8080'
+  $open_listen_port          = false
+  $ssl_listen_address        = $::clientcert
+  $ssl_listen_port           = '8081'
+  # This technically defaults to 'true', but in order to preserve backwards
+  # compatibility with the deprecated 'manage_redhat_firewall' parameter, we
+  # need to specify 'undef' as the default so that we can tell whether or
+  # not the user explicitly specified a value.  See implementation in
+  # `firewall.pp`.  We should change this back to `true` when we get rid
+  # of `manage_redhat_firewall`.
+  $open_ssl_listen_port      = undef
+  $postgres_listen_addresses = 'localhost'
+  # This technically defaults to 'true', but in order to preserve backwards
+  # compatibility with the deprecated 'manage_redhat_firewall' parameter, we
+  # need to specify 'undef' as the default so that we can tell whether or
+  # not the user explicitly specified a value.  See implementation in
+  # `postgresql.pp`.  We should change this back to `true` when we get rid
+  # of `manage_redhat_firewall`.
+  $open_postgres_port        = undef
 
-  ### Module specific parameters
-  $db_type = 'hsqldb'
-  $db_host = 'localhost'
-  $db_port = '5432'
-  $db_name = 'puppetdb'
-  $db_user = 'puppetdb'
-  $db_password = fqdn_rand(100000000000)
+  $database                  = 'postgres'
 
-  ### Application related parameters
+  # The remaining database settings are not used for an embedded database
+  $database_host          = 'localhost'
+  $database_port          = '5432'
+  $database_name          = 'puppetdb'
+  $database_username      = 'puppetdb'
+  $database_password      = 'puppetdb'
 
-  $package = $::operatingsystem ? {
-    default => 'puppetdb',
+  $puppetdb_version       = 'present'
+
+  # TODO: figure out a way to make this not platform-specific
+  $manage_redhat_firewall = undef
+
+  $gc_interval            = '60'
+
+  case $::osfamily {
+    'RedHat': {
+      $firewall_supported       = true
+      $persist_firewall_command = '/sbin/iptables-save > /etc/sysconfig/iptables'
+    }
+
+    'Debian': {
+      $firewall_supported       = false
+      # TODO: not exactly sure yet what the right thing to do for Debian/Ubuntu is.
+      #$persist_firewall_command = '/sbin/iptables-save > /etc/iptables/rules.v4'
+    }
+    default: {
+      fail("${module_name} supports osfamily's RedHat and Debian. Your osfamily is recognized as ${::osfamily}")
+    }
   }
 
-  $service = $::operatingsystem ? {
-    default => 'puppetdb',
+  if $::puppetversion =~ /Puppet Enterprise/ {
+    $puppetdb_package     = 'pe-puppetdb'
+    $puppetdb_service     = 'pe-puppetdb'
+    $confdir              = '/etc/puppetlabs/puppetdb/conf.d'
+    $puppet_service_name  = 'pe-httpd'
+    $puppet_confdir       = '/etc/puppetlabs/puppet'
+    $terminus_package     = 'pe-puppetdb-terminus'
+    $embedded_subname     = 'file:/opt/puppet/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
+  } else {
+    $puppetdb_package     = 'puppetdb'
+    $puppetdb_service     = 'puppetdb'
+    $confdir              = '/etc/puppetdb/conf.d'
+    $puppet_service_name  = 'puppetmaster'
+    $puppet_confdir       = '/etc/puppet'
+    $terminus_package     = 'puppetdb-terminus'
+    $embedded_subname     = 'file:/usr/share/puppetdb/db/db;hsqldb.tx=mvcc;sql.syntax_pgs=true'
   }
 
-  $service_status = $::operatingsystem ? {
-    default => true,
-  }
-
-  $process = $::operatingsystem ? {
-    default => 'java',
-  }
-
-  $process_args = $::operatingsystem ? {
-    default => 'puppetdb',
-  }
-
-  $process_user = $::operatingsystem ? {
-    default => 'puppetdb',
-  }
-
-  $config_dir = $::operatingsystem ? {
-    default => '/etc/puppetdb/conf.d',
-  }
-
-  $config_file = $::operatingsystem ? {
-    default => '/etc/puppetdb/conf.d/database.ini',
-  }
-
-  $config_file_mode = $::operatingsystem ? {
-    default => '0640',
-  }
-
-  $config_file_owner = $::operatingsystem ? {
-    default => 'puppetdb',
-  }
-
-  $config_file_group = $::operatingsystem ? {
-    default => 'puppetdb',
-  }
-
-  $config_file_init = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => '/etc/default/puppetdb',
-    default                   => '/etc/sysconfig/puppetdb',
-  }
-
-  $pid_file = $::operatingsystem ? {
-    default => '/var/run/puppetdb.pid',
-  }
-
-  $data_dir = $::operatingsystem ? {
-    default => '/var/lib/puppetdb',
-  }
-
-  $log_dir = $::operatingsystem ? {
-    default => '/var/log/puppetdb',
-  }
-
-  $log_file = $::operatingsystem ? {
-    default => '/var/log/puppetdb/puppetdb.log',
-  }
-
-  $port = '8081'
-  $protocol = 'tcp'
-
-  # General Settings
-  $my_class = ''
-  $source = ''
-  $source_dir = ''
-  $source_dir_purge = false
-  $template = 'puppetdb/database.ini.erb'
-  $options = ''
-  $service_autorestart = true
-  $version = 'present'
-  $absent = false
-  $disable = false
-  $disableboot = false
-
-  ### General module variables that can have a site or per module default
-  $monitor = false
-  $monitor_tool = ''
-  $monitor_target = $::ipaddress
-  $firewall = false
-  $firewall_tool = ''
-  $firewall_src = '0.0.0.0/0'
-  $firewall_dst = $::ipaddress
-  $puppi = false
-  $puppi_helper = 'standard'
-  $debug = false
-  $audit_only = false
-
+  $puppet_conf              = "${puppet_confdir}/puppet.conf"
+  $puppetdb_startup_timeout = 15
 }

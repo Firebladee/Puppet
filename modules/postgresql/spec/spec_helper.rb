@@ -1,25 +1,27 @@
-# Based on https://github.com/puppetlabs/puppetlabs-ntp/blob/master/spec/spec_helper.rb
-# Thanks to Ken Barber for advice about http://projects.puppetlabs.com/issues/11191  
-require 'puppet'
-require 'rspec-puppet'
-require 'tmpdir'
+require 'puppetlabs_spec_helper/module_spec_helper'
 
 RSpec.configure do |c|
-  c.before :each do
-    # Create a temporary puppet confdir area and temporary site.pp so
-    # when rspec-puppet runs we don't get a puppet error.
-    @puppetdir = Dir.mktmpdir("postgresql")
-    manifestdir = File.join(@puppetdir, "manifests")
-    Dir.mkdir(manifestdir)
-    FileUtils.touch(File.join(manifestdir, "site.pp"))
-    Puppet[:confdir] = @puppetdir
-  end
+  c.include PuppetlabsSpec::Files
 
-  c.filter_run_excluding :broken => true
+  c.before :each do
+    # Ensure that we don't accidentally cache facts and environment
+    # between test cases.
+    Facter::Util::Loader.any_instance.stubs(:load_all)
+    Facter.clear
+    Facter.clear_messages
+
+    # Store any environment variables away to be restored later
+    @old_env = {}
+    ENV.each_key {|k| @old_env[k] = ENV[k]}
+  end
 
   c.after :each do
-    FileUtils.remove_entry_secure(@puppetdir)
+    PuppetlabsSpec::Files.cleanup
   end
+end
 
-  c.module_path = File.join(File.dirname(__FILE__), '../../')
+# Convenience helper for returning parameters for a type from the
+# catalogue.
+def param(type, title, param)
+  param_value(catalogue, type, title, param)
 end
