@@ -1,0 +1,16 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	localhost. root.localhost. (
+			2011121201		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	ns.live-1.globalvision.com.
+1	IN	PTR	solr1.live-1.globalvision.com.
+2	IN	PTR	solr2.live-1.globalvision.com.
+4	IN	PTR 	solr-slave1.live-1.globalvision.com. 
+5	IN	PTR 	solr-slave2.live-1.globalvision.com. 

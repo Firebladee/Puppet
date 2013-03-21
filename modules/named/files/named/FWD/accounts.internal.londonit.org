@@ -1,0 +1,17 @@
+$TTL 500
+
+@       IN      SOA     ns1.internal.londonit.org.      sysadmin.londonmarketing.com. (
+                        2012052801	; serial number YYMMDDNN
+                        500             ; Refresh
+                        500             ; Retry
+                        500             ; Expire
+                        500             ; Min TTL
+			)
+
+                NS      ns1.internal.londonit.org. 
+                NS      ns2.internal.londonit.org. 
+
+
+$ORIGIN accounts.internal.londonit.org.
+;Public Facing DB
+acc-db-ro-1.pub	IN	A	10.100.50.100

@@ -1,0 +1,14 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	localhost. root.localhost. (
+			201011101	; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	ns.live-1.globalvision.com.
+$GENERATE 3-252 $ PTR	web$.live-1.globalvision.com.
+252 IN PTR	directorycache.live-1.globalvision.com.

@@ -1,0 +1,39 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	localhost. root.localhost. (
+			2011032801		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	ns.live-1.globalvision.com.
+1	IN	PTR	gw1.live-1.globalvision.com.
+2	IN	PTR	gold1.live-1.globalvision.com.
+3	IN	PTR	gw2.live-1.globalvision.com.
+4	IN	PTR	monitor1.internal.globalvision.com.
+5	IN	PTR	vm01.internal.globalvision.com.
+7	IN	PTR	vm02.internal.globalvision.com.
+8	IN	PTR	gold2.live-1.globalvision.com.
+9	IN	PTR	gold3.live-1.globalvision.com.
+10	IN	PTR	ns.live-1.globalvision.com.
+11	IN	PTR	cronjobs.internal.globalvision.com.
+12	IN	PTR	vm03.internal.globalvision.com.
+13	IN	PTR	londonimages.live-1.globalvision.com.
+14	IN	PTR	splunk01.live-1.globalvision.com.
+15	IN	PTR	vm04.internal.globalvision.com.
+$GENERATE 16-39 $ PTR $.0.3.10.internal.globalvision.com. 
+40	IN	PTR	hotelsearch.live-1.globalvision.com.
+$GENERATE 41-100 $ PTR $.0.3.10.internal.globalvision.com. 
+101	IN	PTR	mail1.live-1.globalvision.com.
+102	IN	PTR	db2.live-1.globalvision.com.
+103	IN	PTR	sql-3.live-1.globalvision.com.
+104	IN	PTR	db4.live-1.globalvision.com.
+106	IN	PTR	sql-6.live-1.globalvision.com.
+107	IN	PTR	mail1.live-1.globalvision.com.
+108	IN	PTR	db3.live-1.globalvision.com.
+$GENERATE 109-174 $ PTR $.0.3.10.internal.globalvision.com. 
+175	IN	PTR	cache1.live-1.globalvision.com.
+$GENERATE 176-255 $ PTR $.0.3.10.internal.globalvision.com. 

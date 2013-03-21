@@ -1,0 +1,31 @@
+$TTL 500
+
+@       IN      SOA     ns1.internal.londonit.org.      sysadmin.londonmarketing.com. (
+                        2012091701	; serial number YYMMDDNN
+                        500             ; Refresh
+                        500             ; Retry
+                        500             ; Expire
+                        500             ; Min TTL
+			)
+
+                NS      ns1.internal.londonit.org. 
+                NS      ns2.internal.londonit.org. 
+
+
+$ORIGIN internal.londonit.org.
+ns1	IN	A	10.3.0.10
+ns2	IN	A	10.3.1.201
+puppet	IN	A	10.3.1.10
+puppetmaster	IN	A	10.3.1.10
+jira	IN	A	10.3.1.5
+sysdb1	IN	A	10.3.1.251
+sysdb2	IN	A	10.3.1.252
+sysdb	IN	A	10.3.1.250
+
+;VM Servers
+vm01	IN	A	10.3.0.5
+vm02	IN	A	10.3.0.7
+vm03	IN	A	10.3.0.12
+vm04	IN	A	10.3.0.15
+vm05	IN	A	10.3.0.16
+vcenter-2k8	IN	A	10.3.1.50

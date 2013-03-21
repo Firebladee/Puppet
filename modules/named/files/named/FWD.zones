@@ -1,0 +1,43 @@
+zone "database.live-1.globalvision.com" {
+type master;
+file "/etc/named/FWD/database.live-1.globalvision.com";
+};
+
+
+zone "internal.globalvision.com" {
+type master;
+file "/etc/named/FWD/internal.globalvision.com";
+forwarders { };
+};
+
+
+zone "live-1.globalvision.com" {
+type master;
+file "/etc/named/FWD/live-1.globalvision.com";
+forwarders { };
+};
+
+zone "internal.londonit.org" {
+type master;
+file "/etc/named/FWD/internal.londonit.org";
+forwarders { };
+};
+
+zone "internal.hotelmap.com" {
+type master;
+file "/etc/named/FWD/internal.hotelmap.com";
+forwarders { };
+};
+
+zone "accounts.internal.londonit.org" {
+type master;
+file "/etc/named/FWD/accounts.internal.londonit.org";
+forwarders { };
+};
+
+zone "accounts.external.londonit.org" {
+type master;
+file "/etc/named/FWD/accounts.external.londonit.org";
+forwarders { };
+};
+
