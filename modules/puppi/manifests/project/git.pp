@@ -1,6 +1,6 @@
 # == Define puppi::project::git
 #
-# This is a shortcut define to build a puppi project for the deploy of 
+# This is a shortcut define to build a puppi project for the deploy of
 # file from a git repo.
 # It uses different "core" defines (puppi::project, puppi:deploy (many),
 # puppi::rollback (many)) to build a full featured template project for
@@ -16,6 +16,11 @@
 #
 # [*deploy_root*]
 #   The destination directory where the retrieved file(s) are deployed.
+#
+# [*install_git*]
+#   If the git package hs to be installed. Default true.
+#   Set to false if you install git via other modules and have resource
+#   conflicts.
 #
 # [*git_subdir*]
 #   (Optional) - If you want to copy to the deploy_root only a subdir
@@ -38,8 +43,8 @@
 #   puppi deploy myapp -o "commit=1061cb731bc75a1188b58b889b74ce1505ccb412"
 #
 # [*keep_gitdata*]
-#   (Optional) - Define if you want to keep git metadata directory (.git) 
-#   in the deploy root. According to this value backup and rollback 
+#   (Optional) - Define if you want to keep git metadata directory (.git)
+#   in the deploy root. According to this value backup and rollback
 #   operations change (with keep_gitdata set to true no real backups are done
 #   and operations are made on the git tree, if set to false, file are copied
 #   and the $backup_* options used. Default is true
@@ -123,6 +128,7 @@
 define puppi::project::git (
   $source,
   $deploy_root,
+  $install_git              = true,
   $git_subdir               = 'undefined',
   $tag                      = 'undefined',
   $branch                   = 'master',
@@ -161,18 +167,16 @@ define puppi::project::git (
     default => $postdeploy_user,
   }
 
-  # Unless explicitely defined, we assume that the WAR file to use
-  # for initialization is the same to use for deploys
-  $init_real_source = $init_source ? {
-    ''      => $source,
-    default => $init_source,
-  }
-
+  $bool_install_git = any2bool($install_git)
   $bool_keep_gitdata = any2bool($keep_gitdata)
   $bool_verbose = any2bool($verbose)
   $bool_run_checks = any2bool($run_checks)
   $bool_auto_deploy = any2bool($auto_deploy)
 
+### INSTALL GIT
+  if ($bool_install_git == true) {
+    if ! defined(Package['git']) { package { 'git': ensure => installed } }
+  }
 
 ### CREATE PROJECT
     puppi::project { $name:
@@ -196,7 +200,7 @@ define puppi::project::git (
     puppi::deploy { "${name}-Load_Balancer_Block":
       priority  => '25' ,
       command   => 'firewall.sh' ,
-      arguments => "$firewall_src_ip $firewall_dst_port on $firewall_delay" ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} on ${firewall_delay}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -207,7 +211,7 @@ define puppi::project::git (
     puppi::deploy { "${name}-Backup_existing_data":
       priority  => '30' ,
       command   => 'archive.sh' ,
-      arguments => "-b $deploy_root -o '$backup_rsync_options' -n $backup_retention" ,
+      arguments => "-b ${deploy_root} -o '${backup_rsync_options}' -n ${backup_retention}" ,
       user      => 'root' ,
       project   => $name ,
       enable    => $enable ,
@@ -218,7 +222,7 @@ define puppi::project::git (
     puppi::deploy { "${name}-Disable_extra_services":
       priority  => '36' ,
       command   => 'service.sh' ,
-      arguments => "stop $disable_services" ,
+      arguments => "stop ${disable_services}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -261,7 +265,7 @@ define puppi::project::git (
     puppi::deploy { "${name}-Enable_extra_services":
       priority  => '44' ,
       command   => 'service.sh' ,
-      arguments => "start $disable_services" ,
+      arguments => "start ${disable_services}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -272,7 +276,7 @@ define puppi::project::git (
     puppi::deploy { "${name}-Load_Balancer_Unblock":
       priority  => '46' ,
       command   => 'firewall.sh' ,
-      arguments => "$firewall_src_ip $firewall_dst_port off 0" ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} off 0" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -297,7 +301,7 @@ define puppi::project::git (
     puppi::rollback { "${name}-Load_Balancer_Block":
       priority  => '25' ,
       command   => 'firewall.sh' ,
-      arguments => "$firewall_src_ip $firewall_dst_port on $firewall_delay" ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} on ${firewall_delay}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -308,7 +312,7 @@ define puppi::project::git (
     puppi::rollback { "${name}-Disable_extra_services":
       priority  => '37' ,
       command   => 'service.sh' ,
-      arguments => "stop $disable_services" ,
+      arguments => "stop ${disable_services}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -330,7 +334,7 @@ define puppi::project::git (
     puppi::rollback { "${name}-Recover_Files_To_Deploy":
       priority  => '40' ,
       command   => 'archive.sh' ,
-      arguments => "-r $deploy_root -o '$backup_rsync_options'" ,
+      arguments => "-r ${deploy_root} -o '${backup_rsync_options}'" ,
       user      => $user ,
       project   => $name ,
       enable    => $enable ,
@@ -363,7 +367,7 @@ define puppi::project::git (
     puppi::rollback { "${name}-Enable_extra_services":
       priority  => '44' ,
       command   => 'service.sh' ,
-      arguments => "start $disable_services" ,
+      arguments => "start ${disable_services}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -374,7 +378,7 @@ define puppi::project::git (
     puppi::rollback { "${name}-Load_Balancer_Unblock":
       priority  => '46' ,
       command   => 'firewall.sh' ,
-      arguments => "$firewall_src_ip $firewall_dst_port off 0" ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} off 0" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -408,7 +412,7 @@ define puppi::project::git (
 
 ### AUTO DEPLOY DURING PUPPET RUN
   if ($bool_auto_deploy == true) {
-    puppi::run { "$name": }
+    puppi::run { $name: }
   }
 
 }

@@ -26,7 +26,7 @@ define puppi::report (
 
   $ensure = bool2ensure($enable)
 
-  file { "${puppi::params::projectsdir}/$project/report/${priority}-${name}":
+  file { "${puppi::params::projectsdir}/${project}/report/${priority}-${name}":
     ensure  => $ensure,
     mode    => '0755',
     owner   => $puppi::params::configfile_owner,
@@ -34,7 +34,5 @@ define puppi::report (
     content => "su - ${user} -c \"export project=${project} && ${puppi::params::scriptsdir}/${command} ${arguments}\"\n",
     tag     => 'puppi_report',
   }
-
-  Puppi::Report[$name] -> Class['puppi::is_installed']
 
 }

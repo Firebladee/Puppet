@@ -19,6 +19,9 @@ showhelp () {
     echo "-t <file_type> - The type of file that is retrieved: list|tarball|maven-metadata|dir"
     echo "-d <local_dir> - An alternative destination directory (default is automatically chosen)"
     echo "-a <yes|no> - If 'no' return a special error code (99) if the download checksum is the same of the one previously downloaded"
+    echo "-u <http_user> - in case of type http, specify a http_user for curl"
+    echo "-p <http_password> - in case of type http, specifiy http_user for curl"
+    echo "-k - tell curl not to validate ssl certs"
     echo "              This option can be used for automatic deploys (ie via cron) that actually deploy only new changes"
 }
 
@@ -67,7 +70,10 @@ while [ $# -gt 0 ]; do
           downloaddir=$storedir
           save_runtime_config "source_type=mysql"
           ;;
-
+          gz)
+          downloaddir=$storedir
+          save_runtime_config "source_type=gz"
+          ;;
       esac
       shift 2 ;;
     -d)
@@ -77,6 +83,15 @@ while [ $# -gt 0 ]; do
     -a)
       alwaysdeploy=$2
       shift 2 ;;
+    -u)
+      http_user=$2
+      shift 2 ;;
+    -p)
+      http_password=$2
+      shift 2 ;;
+    -k)
+      ssl_arg=$1
+      shift 1 ;;
     *)
       showhelp
       exit
@@ -87,7 +102,12 @@ done
 # Define what to use for downloads
 cd $downloaddir
 
-case $type in 
+case $type in
+    s3)
+        s3cmd get $url
+        check_retcode
+        save_runtime_config "downloadedfile=$downloaddir/$downloadfilename"
+    ;;
     ssh|scp) 
         # ssh://user@my.server/file/path
         scpuri=$(echo $url | cut -d'/' -f3-)
@@ -98,7 +118,11 @@ case $type in
         save_runtime_config "downloadedfile=$downloaddir/$downloadfilename"
     ;;
     http|https)
-        curl -s -f -L $url -O
+        if [ -z "$http_password" ] ; then
+          curl $ssl_arg -s -f -L "$url" -O
+        else
+          curl $ssl_arg -s -f -L --anyauth --user $http_user:$http_password "$url" -O
+	fi
         check_retcode
         save_runtime_config "downloadedfile=$downloaddir/$downloadfilename"
     ;;
@@ -121,8 +145,8 @@ case $type in
         save_runtime_config "downloadedfile=$downloaddir/$downloadfilename"
     ;;
     rsync)
-        rsync -a $url .
-        # rsync -rlptD $url . # Why not preserving users/groups?
+        rsync -a "$url" .
+        # rsync -rlptD $url . # Why not preserving users/groups?
         check_retcode
         save_runtime_config "downloadedfile=$downloaddir/$downloadfilename"
     ;;

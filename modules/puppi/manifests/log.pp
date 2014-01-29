@@ -18,6 +18,11 @@ define puppi::log (
   require puppi
   require puppi::params
 
+  $array_log = is_array($log) ? {
+    false     => split($log, ','),
+    default   => $log,
+  }
+
   file { "${puppi::params::logsdir}/${name}":
     ensure  => 'present',
     mode    => '0644',
@@ -27,7 +32,5 @@ define puppi::log (
     content => template('puppi/log.erb'),
     tag     => 'puppi_log',
   }
-
-  Puppi::Log[$name] -> Class['puppi::is_installed']
 
 }

@@ -2,7 +2,7 @@
 #
 # This class installs the puppi agent on mcollective servers
 # (Note that in mcollective terminology a server is an host
-# managed by a mcollective client)
+# managed by a mcollective client)
 #
 # == Usage:
 # include puppi::mcollective::server
@@ -19,6 +19,7 @@ class puppi::mcollective::server {
     owner   => 'root',
     group   => 'root',
     source  => 'puppet:///modules/puppi/mcollective/puppi.ddl',
+    require => Class['mcollective'],
   }
 
   file { "${puppi::params::mcollective}/agent/puppi.rb":
@@ -27,8 +28,7 @@ class puppi::mcollective::server {
     owner   => 'root',
     group   => 'root',
     source  => 'puppet:///modules/puppi/mcollective/puppi.rb',
+    require => Class['mcollective'],
   }
-
-  Class['puppi::mcollective::server'] -> Class['puppi::is_installed']
 
 }

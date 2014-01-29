@@ -29,12 +29,20 @@
 #
 define puppi::todo (
   $description   = '',
-  $notes     = '',
+  $notes         = '',
   $check_command = '',
-  $run       = '' ) {
+  $run           = '' ) {
 
   require puppi
   require puppi::params
+
+  $array_run = is_array($run) ? {
+    false     => $run ? {
+      ''      => [],
+      default => split($run, ','),
+    },
+    default   => $run,
+  }
 
   file { "${puppi::params::tododir}/${name}":
     ensure  => present,
@@ -45,7 +53,5 @@ define puppi::todo (
     content => template('puppi/todo.erb'),
     tag     => 'puppi_todo',
   }
-
-  Puppi::Todo[$name] -> Class['puppi::is_installed']
 
 }

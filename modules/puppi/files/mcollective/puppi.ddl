@@ -14,6 +14,7 @@ metadata    :name        => "SimpleRPC Agent For PUPPI Commands",
               :prompt      => "Project",
               :description => "PUPPI project",
               :type        => :string,
+              :validation  => '^[a-zA-Z\-\.=_\d]+$',
               :optional    => true,
               :maxlength   => 50
 
@@ -21,6 +22,7 @@ metadata    :name        => "SimpleRPC Agent For PUPPI Commands",
               :prompt      => "Puppi options",
               :description => "PUPPI options",
               :type        => :string,
+              :validation  => '^[a-zA-Z\-\.=_\d]+$',
               :optional    => true,
               :maxlength   => 50
 
@@ -34,7 +36,7 @@ metadata    :name        => "SimpleRPC Agent For PUPPI Commands",
     end
 end
 
-[ "deploy" , "rollback" , "init" ].each do |myact|
+[ "deploy" , "rollback" , "init" , "configure" ].each do |myact|
     action myact, :description => "Run puppi myact" do
         display :always
 
@@ -42,6 +44,7 @@ end
               :prompt      => "Project",
               :description => "PUPPI project",
               :type        => :string,
+              :validation  => '^[a-zA-Z\-\.=_\d]+$',
               :optional    => false,
               :maxlength   => 50
 
@@ -49,6 +52,7 @@ end
               :prompt      => "Puppi options",
               :description => "PUPPI options",
               :type        => :string,
+              :validation  => '^[a-zA-Z\-\.=_\d]+$',
               :optional    => true,
               :maxlength   => 50
 

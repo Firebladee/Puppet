@@ -9,13 +9,9 @@ define puppi::project (
 
   require puppi::params
 
-  $ensure = $enable ? {
+  $ensure = any2bool($enable) ? {
     false   => 'absent',
-    'false' => 'absent',
-    'no'    => 'absent',
-    true    => 'directory',
-    'true'  => 'directory',
-    'yes'   => 'directory',
+    default => 'directory',
   }
 
   $ensurefile = bool2ensure($enable)
@@ -68,6 +64,16 @@ define puppi::project (
       recurse => true,
       purge   => true,
       require => File["${puppi::params::projectsdir}/${name}"];
+      
+    "${puppi::params::projectsdir}/${name}/configure":
+      ensure  => $ensure,
+      mode    => '0755',
+      owner   => $puppi::params::configfile_owner,
+      group   => $puppi::params::configfile_group,
+      force   => true,
+      recurse => true,
+      purge   => true,
+      require => File["${puppi::params::projectsdir}/${name}"];
 
     "${puppi::params::projectsdir}/${name}/report":
       ensure  => $ensure,
@@ -90,7 +96,5 @@ define puppi::project (
       group   => $puppi::params::configfile_group,
       require => File["${puppi::params::projectsdir}/${name}"];
   }
-
-  Puppi::Project[$name] -> Class['puppi::is_installed']
 
 }

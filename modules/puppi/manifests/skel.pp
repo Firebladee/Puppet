@@ -147,9 +147,38 @@ class puppi::skel {
     mode    => '0750',
     owner   => $puppi::params::configfile_owner,
     group   => $puppi::params::configfile_group,
-    source  => "${puppi::params::general_base_source}/puppi/mailpuppicheck",
+    source  => 'puppet:///modules/puppi/mailpuppicheck',
   }
 
-  Class['puppi::skel'] -> Class['puppi::is_installed']
+  # Puppi common scripts
+  file { 'puppi.scripts':
+    ensure  => present,
+    path    => "${puppi::params::scriptsdir}/",
+    mode    => '0755',
+    owner   => $puppi::params::configfile_owner,
+    group   => $puppi::params::configfile_group,
+    source  => 'puppet:///modules/puppi/scripts/',
+    recurse => true,
+#   purge   => true,
+    ignore  => '.svn',
+  }
 
+  # Logs cleanup script
+  if $::kernel == 'Linux' {
+    if $puppi::logs_retention_days
+    and $puppi::logs_retention_days != '0' {
+      $purge_cron_ensure = 'present'
+    } else {
+      $purge_cron_ensure = 'absent'
+    }
+
+    file { 'puppi_cron_logs_purge':
+      ensure  => $purge_cron_ensure,
+      path    => '/etc/cron.daily/puppi_clean',
+      mode    => '0755',
+      owner   => 'root',
+      group   => 'root',
+      content => template('puppi/puppi_clean.erb'),
+    }
+  } 
 }

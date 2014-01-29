@@ -15,16 +15,17 @@
 # puppi::run { "myapp": }
 #
 define puppi::run (
-  $project = '' ) {
+  $project = '',
+  $timeout = 300) {
 
   require puppi
 
   exec { "Run_Puppi_${name}":
-    command => "puppi deploy ${name} && touch ${puppi::params::archivedir}/puppirun_${name}",
+    command => "puppi deploy ${name}; [ $? -le \"1\" ] && touch ${puppi::params::archivedir}/puppirun_${name}",
     path    => '/bin:/sbin:/usr/sbin:/usr/bin',
     creates => "${puppi::params::archivedir}/puppirun_${name}",
+    timeout => $timeout,
+    # require => File[ tag == 'puppi_deploy' ],
   }
-
-  Puppi::Run[$name] -> Class['puppi::is_installed']
 
 }

@@ -173,18 +173,15 @@ define puppi::project::builder (
     'dir'            => 'dir',
     'tarball'        => 'tarball',
     'zip'            => 'zip',
+    'gz'             => 'gz',
     'maven-metadata' => 'maven-metadata',
     'maven'          => 'maven-metadata',
     'war'            => 'war',
     'list'           => 'list',
   }
 
-  $real_always_deploy = $always_deploy ? {
-    'no'    => 'no',
-    'false' => 'no',
+  $real_always_deploy = any2bool($always_deploy) ? {
     false   => 'no',
-    'yes'   => 'yes',
-    'true'  => 'yes',
     true    => 'yes',
   }
 
@@ -197,12 +194,12 @@ define puppi::project::builder (
   puppi::project { $name: enable => $enable }
 
 
-### INIT SEQUENCE
+### INIT SEQUENCE
   if ($init_source != '') {
     puppi::initialize { "${name}-Deploy_Files":
       priority  => '40' ,
       command   => 'get_file.sh' ,
-      arguments => "-s $init_source -d $deploy_root" ,
+      arguments => "-s ${init_source} -d ${deploy_root}" ,
       user      => $user ,
       project   => $name ,
       enable    => $enable ,
@@ -222,21 +219,26 @@ define puppi::project::builder (
     }
   }
 
-    # Here source file is retrieved
-    puppi::deploy { "${name}-Retrieve_SourceFile":
-      priority  => '20' ,
-      command   => 'get_file.sh' ,
-      arguments => "-s $source -t $real_source_type -a $real_always_deploy" ,
-      user      => 'root' ,
-      project   => $name ,
-      enable    => $enable ,
-    }
+  # Here source file is retrieved
+  puppi::deploy { "${name}-Retrieve_SourceFile":
+    priority  => '20' ,
+    command   => 'get_file.sh' ,
+    arguments => "-s ${source} -t ${real_source_type} -a ${real_always_deploy}" ,
+    user      => 'root' ,
+    project   => $name ,
+    enable    => $enable ,
+  }
+
+  $args_magicfix = $magicfix ? {
+    ''      => '',
+    default => "-m ${magicfix}" ,
+  }
 
   if ($real_source_type == 'tarball') {
     puppi::deploy { "${name}-PreDeploy_Tar":
       priority  => '25' ,
       command   => 'predeploy.sh' ,
-      arguments => $magicfix ? { '' => '', default => "-m $magicfix" , },
+      arguments => $args_magicfix,
       user      => 'root' ,
       project   => $name ,
       enable    => $enable ,
@@ -244,10 +246,11 @@ define puppi::project::builder (
   }
 
   if ($real_source_type == 'zip') {
+
     puppi::deploy { "${name}-PreDeploy_Zip":
       priority  => '25' ,
       command   => 'predeploy.sh' ,
-      arguments => $magicfix ? { '' => '', default => "-m $magicfix" , },
+      arguments => $args_magicfix,
       user      => 'root' ,
       project   => $name ,
       enable    => $enable ,
@@ -258,15 +261,21 @@ define puppi::project::builder (
     puppi::deploy { "${name}-Extract_File_Metadata":
       priority  => '22' ,
       command   => 'get_metadata.sh' ,
-      arguments => $magicfix ? { '' => '', default => "-m $magicfix" , },
+      arguments => $args_magicfix,
       user      => 'root' ,
       project   => $name ,
       enable    => $enable ,
     }
+
+    $clean_file_list_magicfix = $magicfix ? {
+      ''      => '',
+      default => $magicfix,
+    }
+
     puppi::deploy { "${name}-Clean_File_List":
       priority  => '24' ,
       command   => 'clean_filelist.sh' ,
-      arguments => $magicfix ? { '' => '', default => $magicfix , },
+      arguments => $clean_file_list_magicfix,
       user      => 'root' ,
       project   => $name ,
       enable    => $enable ,
@@ -285,7 +294,7 @@ define puppi::project::builder (
     puppi::deploy { "${name}-Backup_existing_Files":
       priority  => '30' ,
       command   => 'archive.sh' ,
-      arguments => "-b $deploy_root -m $backup -o '$backup_rsync_options' -n $backup_retention" ,
+      arguments => "-b ${deploy_root} -m ${backup} -o '${backup_rsync_options}' -n ${backup_retention}" ,
       user      => 'root' ,
       project   => $name ,
       enable    => $enable ,
@@ -296,7 +305,7 @@ define puppi::project::builder (
     puppi::deploy { "${name}-Load_Balancer_Block":
       priority  => '34' ,
       command   => 'firewall.sh' ,
-      arguments => "$firewall_src_ip $firewall_dst_port on $firewall_delay" ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} on ${firewall_delay}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -307,7 +316,7 @@ define puppi::project::builder (
     puppi::deploy { "${name}-Remove_existing_WAR":
       priority  => '35' ,
       command   => 'delete.sh' ,
-      arguments => "$deploy_root/$source_filename" ,
+      arguments => "${deploy_root}/${source_filename}" ,
       user      => 'root' ,
       project   => $name ,
       enable    => $enable ,
@@ -315,7 +324,7 @@ define puppi::project::builder (
     puppi::deploy { "${name}-Check_undeploy":
       priority  => '36' ,
       command   => 'checkwardir.sh' ,
-      arguments => "-a $deploy_root/$source_filename" ,
+      arguments => "-a ${deploy_root}/${source_filename}" ,
       user      => $user ,
       project   => $name ,
       enable    => $enable ,
@@ -326,7 +335,7 @@ define puppi::project::builder (
     puppi::deploy { "${name}-Disable_extra_services":
       priority  => '37' ,
       command   => 'service.sh' ,
-      arguments => "stop $disable_services" ,
+      arguments => "stop ${disable_services}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -369,7 +378,7 @@ define puppi::project::builder (
     puppi::deploy { "${name}-Enable_extra_services":
       priority  => '44' ,
       command   => 'service.sh' ,
-      arguments => "start $disable_services" ,
+      arguments => "start ${disable_services}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -380,7 +389,7 @@ define puppi::project::builder (
     puppi::deploy { "${name}-Check_deploy":
       priority  => '45' ,
       command   => 'checkwardir.sh' ,
-      arguments => "-p $deploy_root/$source_filename" ,
+      arguments => "-p ${deploy_root}/${source_filename}" ,
       user      => $user ,
       project   => $name ,
       enable    => $enable ,
@@ -391,7 +400,7 @@ define puppi::project::builder (
     puppi::deploy { "${name}-Load_Balancer_Unblock":
       priority  => '46' ,
       command   => 'firewall.sh' ,
-      arguments => "$firewall_src_ip $firewall_dst_port off 0" ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} off 0" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -416,7 +425,7 @@ define puppi::project::builder (
     puppi::rollback { "${name}-Load_Balancer_Block":
       priority  => '34' ,
       command   => 'firewall.sh' ,
-      arguments => "$firewall_src_ip $firewall_dst_port on $firewall_delay" ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} on ${firewall_delay}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -427,7 +436,7 @@ define puppi::project::builder (
     puppi::rollback { "${name}-Remove_existing_WAR":
       priority  => '35' ,
       command   => 'delete.sh' ,
-      arguments => "$deploy_root/$source_filename" ,
+      arguments => "${deploy_root}/${source_filename}" ,
       user      => 'root' ,
       project   => $name ,
       enable    => $enable ,
@@ -435,7 +444,7 @@ define puppi::project::builder (
     puppi::rollback { "${name}-Check_undeploy":
       priority  => '36' ,
       command   => 'checkwardir.sh' ,
-      arguments => "-a $deploy_root/$source_filename" ,
+      arguments => "-a ${deploy_root}/${source_filename}" ,
       user      => $user ,
       project   => $name ,
       enable    => $enable ,
@@ -446,7 +455,7 @@ define puppi::project::builder (
     puppi::rollback { "${name}-Disable_extra_services":
       priority  => '37' ,
       command   => 'service.sh' ,
-      arguments => "stop $disable_services" ,
+      arguments => "stop ${disable_services}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -468,7 +477,7 @@ define puppi::project::builder (
     puppi::rollback { "${name}-Recover_Files_To_Deploy":
       priority  => '40' ,
       command   => 'archive.sh' ,
-      arguments => "-r $deploy_root -m $backup -o '$backup_rsync_options'" ,
+      arguments => "-r ${deploy_root} -m ${backup} -o '${backup_rsync_options}'" ,
       user      => $user ,
       project   => $name ,
       enable    => $enable ,
@@ -490,7 +499,7 @@ define puppi::project::builder (
     puppi::rollback { "${name}-Enable_extra_services":
       priority  => '44' ,
       command   => 'service.sh' ,
-      arguments => "start $disable_services" ,
+      arguments => "start ${disable_services}" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -501,7 +510,7 @@ define puppi::project::builder (
     puppi::rollback { "${name}-Check_deploy":
       priority  => '45' ,
       command   => 'checkwardir.sh' ,
-      arguments => "-p $deploy_root/$source_filename" ,
+      arguments => "-p ${deploy_root}/${source_filename}" ,
       user      => $user ,
       project   => $name ,
       enable    => $enable ,
@@ -512,7 +521,7 @@ define puppi::project::builder (
     puppi::rollback { "${name}-Load_Balancer_Unblock":
       priority  => '46' ,
       command   => 'firewall.sh' ,
-      arguments => "$firewall_src_ip $firewall_dst_port off 0" ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} off 0" ,
       user      => 'root',
       project   => $name ,
       enable    => $enable ,
@@ -546,7 +555,7 @@ define puppi::project::builder (
 
 ### AUTO DEPLOY DURING PUPPET RUN
   if ($bool_auto_deploy == true) {
-    puppi::run { "$name": }
+    puppi::run { $name: }
   }
 
 }

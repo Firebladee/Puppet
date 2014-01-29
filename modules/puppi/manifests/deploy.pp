@@ -26,7 +26,7 @@ define puppi::deploy (
 
   $ensure = bool2ensure($enable)
 
-  file { "${puppi::params::projectsdir}/$project/deploy/${priority}-${name}":
+  file { "${puppi::params::projectsdir}/${project}/deploy/${priority}-${name}":
     ensure  => $ensure,
     mode    => '0750',
     owner   => $puppi::params::configfile_owner,
@@ -35,8 +35,6 @@ define puppi::deploy (
     content => "su - ${user} -c \"export project=${project} && ${puppi::params::scriptsdir}/${command} ${arguments}\"\n",
     tag     => 'puppi_deploy',
   }
-
-  Puppi::Deploy[$name] -> Class['puppi::is_installed']
 
 }
 
