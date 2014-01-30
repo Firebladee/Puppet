@@ -41,55 +41,56 @@ define check_mk::server {
     recurse => true,
     notify  => Exec["check_mk_parents_${name}"],
   }
-  file { "${check_mk_location}/main.mk":
-    ensure  => present,
-    path    => "${check_mk_location}/main.mk",
-    mode    => '0644',
-    owner   => $name,
-    group   => $name,
-    content => template('check_mk/main.mk.erb'),
-  }
+#  file { "${check_mk_location}/main.mk":
+#    ensure  => present,
+#    path    => "${check_mk_location}/main.mk",
+#    mode    => '0644',
+#    owner   => $name,
+#    group   => $name,
+#    content => template('check_mk/main.mk.erb'),
+#  }
 
-  file { "${check_mk_location}/conf.d/conf-contact.mk":
-    ensure => present,
-    path   => "${check_mk_location}/conf.d/conf-contact.mk",
-    mode   => '0644',
-    owner  => $name,
-    group  => $name,
-    source => 'puppet:///check_mk/conf-contact.mk',
-  }
+#  file { "${check_mk_location}/conf.d/conf-contact.mk":
+#    ensure => present,
+#    path   => "${check_mk_location}/conf.d/conf-contact.mk",
+#    mode   => '0644',
+#    owner  => $name,
+#    group  => $name,
+#    source => 'puppet:///check_mk/conf-contact.mk',
+#  }
 
-  file { "${check_mk_location}/conf.d/conf-notification.mk":
-    ensure => present,
-    path   => "${check_mk_location}/conf.d/conf-notification.mk",
-    mode   => '0644',
-    owner  => $name,
-    group  => $name,
-    source => 'puppet:///check_mk/conf-notification.mk',
-  }
+#  file { "${check_mk_location}/conf.d/conf-notification.mk":
+#    ensure => present,
+#    path   => "${check_mk_location}/conf.d/conf-notification.mk",
+#    mode   => '0644',
+#    owner  => $name,
+#    group  => $name,
+#    source => 'puppet:///check_mk/conf-notification.mk',
+#  }
 
-  file { "${omd_site_home}/etc/apache/conf.d/auth.conf":
-    ensure  => present,
-    path    => "${omd_site_home}/etc/apache/conf.d/auth.conf",
-    mode    => '0644',
-    owner   => $name,
-    group   => $name,
-    content => template('check_mk/auth.conf.erb'),
-  }
+#  file { "${omd_site_home}/etc/apache/conf.d/auth.conf":
+#    ensure  => present,
+#    path    => "${omd_site_home}/etc/apache/conf.d/auth.conf",
+#    mode    => '0644',
+#    owner   => $name,
+#    group   => $name,
+#    content => template('check_mk/auth.conf.erb'),
+#  }
 
   exec { "omd restart ${name} apache":
-    subscribe   => File["${omd_site_home}/etc/apache/conf.d/auth.conf"],
+    path        => '/usr/bin',
+#   subscribe   => File["${omd_site_home}/etc/apache/conf.d/auth.conf"],
     refreshonly => true
   }
 
-  file { "${omd_site_home}/etc/nagios/conf.d/timeperiods.cfg":
-    ensure => present,
-    path   => "${omd_site_home}/etc/nagios/conf.d/timeperiods.cfg",
-    mode   => '0644',
-    owner  => $name,
-    group  => $name,
-    source => 'puppet:///check_mk/timeperiods.cfg',
-  }
+#  file { "${omd_site_home}/etc/nagios/conf.d/timeperiods.cfg":
+#    ensure => present,
+#    path   => "${omd_site_home}/etc/nagios/conf.d/timeperiods.cfg",
+#    mode   => '0644',
+#    owner  => $name,
+#    group  => $name,
+#    source => 'puppet:///check_mk/timeperiods.cfg',
+#  }
 
   # Add site to cron.allow
 
