@@ -282,7 +282,7 @@ Facts:
 * [iptables_version](#fact-iptablesversion)
 * [iptables_persistent_version](#fact-iptablespersistentversion)
 
-####Class: firewall
+###Class: firewall
 
 This class is provided to do the basic setup tasks required for using the firewall resources.
 
@@ -294,7 +294,13 @@ You should include the class for nodes that need to use the resources in this mo
 
     class { 'firewall': }
 
-####Type: firewall
+####`ensure`
+
+Indicates the state of `iptables` on your system, allowing you to disable `iptables` if desired.
+
+Can either be `running` or `stopped`. Default to `running`.
+
+###Type: firewall
 
 This type provides the capability to manage firewall rules within puppet.
 
@@ -302,7 +308,7 @@ For more documentation on the type, access the 'Types' tab on the Puppet Labs Fo
 
 <http://forge.puppetlabs.com/puppetlabs/firewall#types>
 
-####Type:: firewallchain
+###Type:: firewallchain
 
 This type provides the capability to manage rule chains for firewalls.
 
@@ -310,30 +316,31 @@ For more documentation on the type, access the 'Types' tab on the Puppet Labs Fo
 
 <http://forge.puppetlabs.com/puppetlabs/firewall#types>
 
-####Fact: ip6tables_version
+###Fact: ip6tables_version
 
 The module provides a Facter fact that can be used to determine what the default version of ip6tables is for your operating system/distribution.
 
-####Fact: iptables_version
+###Fact: iptables_version
 
 The module provides a Facter fact that can be used to determine what the default version of iptables is for your operating system/distribution.
 
-####Fact: iptables_persistent_version
+###Fact: iptables_persistent_version
 
 Retrieves the version of iptables-persistent from your OS. This is a Debian/Ubuntu specific fact.
 
 ##Limitations
 
-Please note, we only aim support for the following distributions and versions
+While we aim to support as low as Puppet 2.6.x (for now), we recommend installing the latest Puppet version from the Puppetlabs official repos.
 
-* Redhat 5.8 or greater
-* Debian 6.0 or greater
-* Ubuntu 11.04 or greater
+Please note, we only aim support for the following distributions and versions - that is, we actually do ongoing system tests on these platforms:
 
-If you want a new distribution supported feel free to raise a ticket and we'll
-consider it. If you want an older revision supported we'll also consider it,
-but don't get insulted if we reject it. Specifically, we will not consider
-Redhat 4.x support - its just too old.
+* Redhat 5.9 and 6.4
+* Debian 6.0 and 7.0
+* Ubuntu 10.04 and 12.04
+
+If you want a new distribution supported feel free to raise a ticket and we'll consider it. If you want an older revision supported we'll also consider it, but don't get insulted if we reject it. Specifically, we will not consider Redhat 4.x support - its just too old.
+
+If you really want to get support for your OS we suggest writing any patch fix yourself, and for continual system testing if you can provide a sufficient trusted Veewee template we could consider adding such an OS to our ongoing continuous integration tests.
 
 Also, as this is a 0.x release the API is still in flux and may change. Make sure
 you read the release notes before upgrading.
@@ -381,3 +388,10 @@ Install the necessary gems:
 And run the tests from the root of the source code:
 
     rake test
+
+If you have a copy of Vagrant 1.1.0 you can also run the system tests:
+
+    RSPEC_SET=debian-606-x64 rake spec:system
+    RSPEC_SET=centos-58-x64 rake spec:system
+
+*Note:* system testing is fairly alpha at this point, your mileage may vary.

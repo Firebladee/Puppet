@@ -136,7 +136,7 @@ module Puppet::Util::Firewall
     # Basic normalisation for older Facter
     os_key = Facter.value(:osfamily)
     os_key ||= case Facter.value(:operatingsystem)
-    when 'RedHat', 'CentOS', 'Fedora'
+    when 'RedHat', 'CentOS', 'Fedora', 'Scientific', 'SL', 'SLC', 'Ascendos', 'CloudLinux', 'PSBM', 'OracleLinux', 'OVS', 'OEL', 'Amazon', 'XenServer'
       'RedHat'
     when 'Debian', 'Ubuntu'
       'Debian'
@@ -152,6 +152,11 @@ module Puppet::Util::Firewall
       end
     end
 
+    # Fedora 15 and newer use systemd for to persist iptable rules
+    if os_key == 'RedHat' && Facter.value(:operatingsystem) == 'Fedora' && Facter.value(:operatingsystemrelease).to_i >= 15
+      os_key = 'Fedora'
+    end
+
     cmd = case os_key.to_sym
     when :RedHat
       case proto.to_sym
@@ -159,6 +164,13 @@ module Puppet::Util::Firewall
         %w{/sbin/service iptables save}
       when :IPv6
         %w{/sbin/service ip6tables save}
+      end
+    when :Fedora
+      case proto.to_sym
+      when :IPv4
+        %w{/usr/libexec/iptables.init save}
+      when :IPv6
+        %w{/usr/libexec/ip6tables.init save}
       end
     when :Debian
       case proto.to_sym
@@ -169,6 +181,13 @@ module Puppet::Util::Firewall
       case proto.to_sym
       when :IPv4
         ["/bin/sh", "-c", "/sbin/iptables-save > /etc/iptables/rules"]
+      end
+    when :Archlinux
+      case proto.to_sym
+      when :IPv4
+        ["/bin/sh", "-c", "/usr/sbin/iptables-save > /etc/iptables/iptables.rules"]
+      when :IPv6
+        ["/bin/sh", "-c", "/usr/sbin/ip6tables-save > /etc/iptables/ip6tables.rules"]
       end
     end
 
