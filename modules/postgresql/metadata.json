@@ -1,103 +1,30 @@
 {
-  "license": "Apache",
-  "checksums": {
-    "tests/postgresql_database.pp": "8c631bdc1a57c3e82b203ec3d5dde5e1",
-    "spec/unit/facts/postgres_default_version_spec.rb": "0a592d4c1a3948f9a661004cd22fcfc2",
-    "spec/unit/classes/server_spec.rb": "a89d34b468251a36ab7c55e7fb619a5f",
-    "spec/support/postgres_test_config.rb": "23238fcb2c364bf8cf025044cee04b88",
-    "tests/postgresql_pg_hba_rule.pp": "4591748c68d75a1014991de70a83aaaa",
-    "spec/system/test_module/manifests/system_default/test_grant_create.pp": "3571b970ee6960974b249a9a5d37bb3c",
-    "manifests/psql.pp": "152a8de73bfe8005c747be20d4019d70",
-    "spec/system/test_module/manifests/system_default/test_user.pp": "7ff611e0d3e5fdc6abe97d90b72bace2",
-    "manifests/client.pp": "462bae5ffbcc40b1172e5fdbfdb909bf",
-    "spec/system/distros/centos5_64/system_default_pg_spec.rb": "c9230d1f915153c0eec2e3a94f6acf56",
-    "spec/support/shared_contexts/pg_vm_context.rb": "9ebe6366c4c8846a3cadd26a0b322c95",
-    "spec/unit/defines/db_spec.rb": "9b99d7f4145b3081d1b025e30f13b3fc",
-    "spec/unit/classes/client_spec.rb": "60e55a28a18b2370dac9c79fc175ba2f",
-    "README.md": "c83b824fb3ed9b2532aa264874170468",
-    "manifests/devel.pp": "66412e2e832bb5a974b60590aa81ab2d",
-    "lib/puppet/parser/functions/postgresql_password.rb": "820da02a888ab42357fe9bc2352b1c37",
-    "Changelog": "96f1e69fb216c9780a4f13db5c3b22cc",
-    "spec/system/test_module/manifests/system_default/test_db.pp": "ca1a26a450fc65c6fe98b8b497105348",
-    "spec/unit/classes/params_spec.rb": "f35c148917971a3e50c48c22c17eab18",
-    "spec/system/distros/ubuntu_lucid_64/Vagrantfile": "a40bf32e36b49799665203270d07beaf",
-    "manifests/role.pp": "9837eef31da65f6a95f8e092219d1f0a",
-    "LICENSE": "a781715ebc5e3e0956ee6baec3140e58",
-    "spec/system/test_module/manifests/system_default/test_pgconf_include_cleanup.pp": "681d571633b6526aa35a56b62d1a75a8",
-    "spec/spec_helper.rb": "21d45639cb46497b9196d7658eefbaa5",
-    "tests/postgresql_user.pp": "974917490d130306d45fbb8edee2d6b6",
-    "spec/system/distros/centos5_64/non_default_pg_spec.rb": "1cc802e52feaf6b6f8bbdcf8b351c288",
-    "manifests/config.pp": "5812da4556529d2f5ebf295d64c132e0",
-    "spec/system/distros/ubuntu_lucid_64/non_default_pg_spec.rb": "159123b873e74b5fa991e160f4ade9c6",
-    "spec/support/shared_examples/system_default_postgres.rb": "628500b750d3806660da13391cfd7579",
-    "manifests/server.pp": "c8448032e07b6cd81071eaebe1afc086",
-    "spec/unit/defines/psql_spec.rb": "c08ca62b81c68609cca83ec1c60fda55",
-    "spec/system/test_module/manifests/system_default/test_pgconf_include.pp": "edc5437ea25c629f0127a19972be7c5b",
-    "spec/support/shared_examples/non_default_postgres.rb": "8cd215ebc88bf18c323640fd40f9362a",
-    "lib/facter/postgres_default_version.rb": "77d926e33f90488694e33b39ec9c8b58",
-    "manifests/params.pp": "ceaf13dfc41bf52798dda318c003ba11",
-    "spec/system/test_module/manifests/system_default/test_tablespace.pp": "d81edfb023f6d70a61148bd5851ba0d2",
-    "spec/support/postgres_test_utils.rb": "2bce1435203364e86bb544c286e3e737",
-    "Rakefile": "cd1f1ef73d4a27269e96fb6d18fcd77c",
-    "tests/init.pp": "f7772943903ec859df2e43b61b700fd4",
-    "spec/unit/defines/database_grant_spec.rb": "b3ec60b58c6f917061bca0a48adbf0b7",
-    "manifests/package_source/yum_postgresql_org.pp": "4acaf3a004ef3dbd16285ac60030e0bb",
-    "spec/system/test_module/manifests/system_default/test_ruby_psql.pp": "fcb3820ebc57c5044d7ec2b8ee371521",
-    "Modulefile": "34d7d1dc01d651ac18c912689440f155",
-    "manifests/init.pp": "80f8827f2b000b0bf057fd7d4e5861c4",
-    "spec/system/distros/centos5_64/Vagrantfile": "3014c27f6c96f49a66bc0926c728986e",
-    "Gemfile": "1184f9c075d93218426d169d0ed4c6b5",
-    "manifests/config/beforeservice.pp": "8ae166802948d14f0c3f0f58091dfd1e",
-    "spec/system/test_module/manifests/system_default/test_initdb.pp": "c4277ad8f3f4492df2736771b421e149",
-    "manifests/initdb.pp": "93dad920189645959c21dfe7da62cf2e",
-    "spec/unit/defines/role_spec.pp": "84def95468a82e156a01abfa5e5cb40d",
-    "spec/unit/defines/database_user_spec.rb": "2cb9eaf726859d82baeb6d4a6bf453c4",
-    "spec/system/base.pp": "979bc1a75b1be3b5f8a8004a49f7363d",
-    "tests/postgresql_pgconf_extras.pp": "51b8d3bf9847a7d7c2a33b131705496f",
-    "spec/unit/defines/tablespace_spec.pp": "28153f7f8393d64c0c2e49e26a085c4c",
-    "manifests/database.pp": "c996defda146adf72dacce8a1bb054e9",
-    "manifests/database_grant.pp": "71486f0c2a5c9cc1f631768268a4c374",
-    "manifests/pg_hba_rule.pp": "2b77e067897ce835e10b3916d5d9f5cb",
-    "manifests/java.pp": "2375dda2a10a4304addf4b924adb3868",
-    "tests/postgresql_db.pp": "2db756a3dea26055fd9aa8e63201ec4d",
-    "spec/classes/postgresql_java_spec.rb": "73efa927e203b0bcb15f2962def0ec33",
-    "spec/unit/classes/devel_spec.rb": "8f24f839c5ced188e5a373fe469d4f29",
-    "spec/unit/classes/init_spec.rb": "87fa63d5276736f7e3a8c62ceba0bca9",
-    "files/RPM-GPG-KEY-PGDG": "78b5db170d33f80ad5a47863a7476b22",
-    "lib/puppet/type/postgresql_psql.rb": "c27d0f181fa17ef4bab123b9b3fd676e",
-    "spec/system/distros/ubuntu_lucid_64/system_default_pg_spec.rb": "9669048e9c7e67438bad7690e66caae9",
-    "manifests/database_user.pp": "cf9026dede8189d49e6c1e8ca77b492f",
-    "spec/unit/functions/postgresql_password_spec.rb": "76034569a5ff627073c5e6ff69176ac3",
-    "manifests/db.pp": "d0b4f16016047cbd29cd9deccb5b7ef7",
-    "Gemfile.lock": "743d259ca309b130c2197cf74a86f334",
-    "spec/unit/defines/pg_hba_rule_spec.rb": "9b7a77c48088d36f9a95b2d82caca8cf",
-    "spec/unit/functions/postgresql_acls_to_resources_hash_spec.rb": "e7740c3cd2110e2fcebab8356012267c",
-    "spec/system/distros/centos6_64/Vagrantfile": "3171cb93b3f6e59fd743d1b2a77d7b45",
-    "manifests/config/afterservice.pp": "372ba32f10ee7a43d063b2e64c266d0c",
-    "tests/official-postgresql-repos.pp": "44e02f3c93b7d5edf1647d608c4e6310",
-    "tests/postgresql_grant.pp": "6f1e08c4f7394b32573a70acc314c3a7",
-    "tests/server.pp": "7a44884738b92730cdcc0282a581dce2",
-    "spec/system/distros/centos6_64/system_default_pg_spec.rb": "08183f2cadfef7bc28c5ede462385412",
-    "tests/postgresql_tablespace.pp": "f3f6b0c2b6ff09b73ff36138604e2b92",
-    "spec/system/test_module/manifests/system_default/test_psql.pp": "36646621942565530b0dd78b86ecef9b",
-    "lib/puppet/provider/postgresql_psql/ruby.rb": "dcee419801692dcbb1d00cafda020557",
-    "spec/unit/defines/database_spec.rb": "b9f0face88bc301d68f460208ba72df4",
-    "spec/unit/defines/validate_db_connection_spec.rb": "1dfe61aca3e98cb96510b3d275097b02",
-    "manifests/pg_hba.pp": "7669824ceab171f995d2fd898ae9d5e7",
-    "spec/support/vagrant_common.rb": "e59a9db099f337f622b1f0f10b8c2e93",
-    "templates/pg_hba_rule.conf": "13b46eecdfd359eddff71fa485ef2f54",
-    "manifests/tablespace.pp": "5546f95af09754e4fdea11c2f30a3b3f",
-    "manifests/package_source/apt_postgresql_org.pp": "f2077dde857658cd3a12c9956ac879d7",
-    "manifests/validate_db_connection.pp": "bce77fe44dc3ecf0a47118c9271b3f9a",
-    "spec/unit/defines/pg_hba_spec.rb": "ea0c151170a9eab5398f66ca191b0383",
-    "spec/system/distros/centos6_64/non_default_pg_spec.rb": "202c59214441a7ce812e0bd0fd9c067c",
-    "lib/puppet/parser/functions/postgresql_acls_to_resources_hash.rb": "d518a7959b950874820a3b0a7a324488"
-  },
-  "version": "2.1.1",
+  "name": "puppetlabs-postgresql",
+  "version": "3.3.0",
+  "summary": "PostgreSQL defined resource types",
+  "source": "git://github.com/puppetlabs/puppet-postgresql.git",
+  "project_page": "https://github.com/puppetlabs/puppet-postgresql",
+  "author": "Inkling/Puppet Labs",
+  "license": "ASL 2.0",
+  "operatingsystem_support": [
+    "RedHat",
+    "OpenSUSE",
+    "SLES",
+    "SLED",
+    "Debian",
+    "Ubuntu"
+  ],
+  "puppet_version": [
+    "2.7",
+    "3.0",
+    "3.1",
+    "3.2",
+    "3.3"
+  ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=3.2.0 <4.0.0"
+      "version_requirement": ">=3.2.0 <5.0.0"
     },
     {
       "name": "puppetlabs/firewall",
@@ -108,62 +35,201 @@
       "version_requirement": ">=1.1.0 <2.0.0"
     },
     {
-      "name": "ripienaar/concat",
-      "version_requirement": ">= 0.2.0"
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 1.0.0 <2.0.0"
     }
   ],
+  "description": "PostgreSQL defined resource types",
   "types": [
     {
+      "name": "postgresql_conf",
+      "doc": "This type allows puppet to manage postgresql.conf parameters.",
+      "properties": [
+        {
+          "name": "ensure",
+          "doc": "The basic property that the resource should be in.\n\nValid values are `present`, `absent`. "
+        },
+        {
+          "name": "value",
+          "doc": "The value to set for this parameter.\n\n"
+        },
+        {
+          "name": "target",
+          "doc": "The path to postgresql.conf\n\n"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "The postgresql parameter name to manage.\n\nValues can match `/^[\\w\\.]+$/`."
+        }
+      ],
+      "providers": [
+        {
+          "name": "parsed",
+          "doc": "Set key/values in postgresql.conf."
+        }
+      ]
+    },
+    {
+      "name": "postgresql_psql",
+      "doc": "",
+      "properties": [
+        {
+          "name": "command",
+          "doc": "The SQL command to execute via psql.\n\n"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "name",
+          "doc": "An arbitrary tag for your own reference; the name of the message.\n\n"
+        },
+        {
+          "name": "unless",
+          "doc": "An optional SQL command to execute prior to the main :command; this is generally intended to be used for idempotency, to check for the existence of an object in the database to determine whether or not the main SQL command needs to be executed at all.\n\n"
+        },
+        {
+          "name": "db",
+          "doc": "The name of the database to execute the SQL command against.\n\n"
+        },
+        {
+          "name": "search_path",
+          "doc": "The schema search path to use when executing the SQL command\n\n"
+        },
+        {
+          "name": "psql_path",
+          "doc": "The path to psql executable.\n\n"
+        },
+        {
+          "name": "psql_user",
+          "doc": "The system user account under which the psql command should be executed.\n\n"
+        },
+        {
+          "name": "psql_group",
+          "doc": "The system user group account under which the psql command should be executed.\n\n"
+        },
+        {
+          "name": "cwd",
+          "doc": "The working directory under which the psql command should be executed.\n\n"
+        },
+        {
+          "name": "refreshonly",
+          "doc": "If 'true', then the SQL will only be executed via a notify/subscribe event.\n\nValid values are `true`, `false`. "
+        }
+      ],
       "providers": [
         {
           "name": "ruby",
           "doc": ""
         }
-      ],
-      "name": "postgresql_psql",
-      "parameters": [
-        {
-          "name": "name",
-          "doc": "An arbitrary tag for your own reference; the name of the message."
-        },
-        {
-          "name": "unless",
-          "doc": "An optional SQL command to execute prior to the main :command; this is generally intended to be used for idempotency, to check for the existence of an object in the database to determine whether or not the main SQL command needs to be executed at all."
-        },
-        {
-          "name": "db",
-          "doc": "The name of the database to execute the SQL command against."
-        },
-        {
-          "name": "psql_user",
-          "doc": "The system user account under which the psql command should be executed."
-        },
-        {
-          "name": "psql_group",
-          "doc": "The system user group account under which the psql command should be executed."
-        },
-        {
-          "name": "cwd",
-          "doc": "The working directory under which the psql command should be executed."
-        },
-        {
-          "name": "refreshonly",
-          "doc": "If 'true', then the SQL will only be executed via a notify/subscribe event."
-        }
-      ],
-      "doc": "",
-      "properties": [
-        {
-          "name": "command",
-          "doc": "The SQL command to execute via psql."
-        }
       ]
     }
   ],
-  "summary": "PostgreSQL defined resource types",
-  "source": "git://github.com/puppetlabs/puppet-postgresql.git",
-  "project_page": "https://github.com/puppetlabs/puppet-postgresql",
-  "description": "PostgreSQL defined resource types",
-  "author": "Inkling/Puppet Labs",
-  "name": "puppetlabs-postgresql"
+  "checksums": {
+    "Changelog": "4efba5c9352052dfeb052af8a9e5579f",
+    "Gemfile": "93d5ca9d6303d2c58c9875675ae65b10",
+    "LICENSE": "746fe83ebbf8970af0a9ea13962293e9",
+    "Modulefile": "386cbbbed3c73bdbd7f3b66acd24dedc",
+    "NOTICE": "d8ffc52f00e00877b45d2b77e709f69e",
+    "README.md": "adbe1743fccb14832303356108ba2b95",
+    "Rakefile": "c4f5c8ac6adc0eb4530c4b3d10cb7da0",
+    "files/RPM-GPG-KEY-PGDG": "78b5db170d33f80ad5a47863a7476b22",
+    "files/validate_postgresql_connection.sh": "20301932819f035492a30880f5bf335a",
+    "lib/puppet/parser/functions/postgresql_acls_to_resources_hash.rb": "d518a7959b950874820a3b0a7a324488",
+    "lib/puppet/parser/functions/postgresql_escape.rb": "2e136fcd653ab38d831c5b40806d47d1",
+    "lib/puppet/parser/functions/postgresql_password.rb": "820da02a888ab42357fe9bc2352b1c37",
+    "lib/puppet/provider/postgresql_conf/parsed.rb": "9c198422c0558faab1bedc00b68cfe45",
+    "lib/puppet/provider/postgresql_psql/ruby.rb": "8b651764452d8f410f72bd4bbc37d27d",
+    "lib/puppet/type/postgresql_conf.rb": "4f333138a3689f9768e7fe4bc3cde9fd",
+    "lib/puppet/type/postgresql_psql.rb": "2c1270cfed4ffb2971059846a57cf983",
+    "manifests/client.pp": "f9bc3a578017fe8eb881de2255bdc023",
+    "manifests/globals.pp": "8c628b7dfb10795f40b60fb033848cb3",
+    "manifests/lib/devel.pp": "94ae7eac3acf1dd3072d481eca4d2d7f",
+    "manifests/lib/java.pp": "6e4a2187c2b4caecad8098b46e99c8e0",
+    "manifests/lib/python.pp": "90736f86301c4c6401ec1180c176b616",
+    "manifests/params.pp": "3891fe57a94602b4372fe7b5ada863af",
+    "manifests/repo/apt_postgresql_org.pp": "ef7012ea3c5429bea11b1114183d32c3",
+    "manifests/repo/yum_postgresql_org.pp": "e0c445f877cdb39774b735417c967d1d",
+    "manifests/repo.pp": "a18a5cb760dbb1e10bdd83730300c1fe",
+    "manifests/server/config.pp": "ad4e6a3b034bf2975e47ac8df156eab4",
+    "manifests/server/config_entry.pp": "81ddbb8fe161d94394c7277a92cc6c1c",
+    "manifests/server/contrib.pp": "3112bd1edbed51b68e1402027f9d53b1",
+    "manifests/server/database.pp": "a6eacc4bf05c8ac12047dbf8aace7bc4",
+    "manifests/server/database_grant.pp": "66e5470bb932b087b540c444ee49941b",
+    "manifests/server/db.pp": "368ce3c55cb1685a7e9598a4760f0d1f",
+    "manifests/server/firewall.pp": "98632b073511a00926908c6951851052",
+    "manifests/server/grant.pp": "7f7fdf96611bfdd599dc382755c61c00",
+    "manifests/server/initdb.pp": "215f84f3d9931372190d9928832e315a",
+    "manifests/server/install.pp": "8520e3a86c74e0587a46c4548097bab3",
+    "manifests/server/passwd.pp": "96214f099cfb97d361f9bdc0734baf38",
+    "manifests/server/pg_hba_rule.pp": "f8e203ac4ea5a18ba065a47c8410f165",
+    "manifests/server/plperl.pp": "d6a2e2f0c93c7b543e9db64202c2e48d",
+    "manifests/server/reload.pp": "d62c048c8f25c167d266e99e36c0f227",
+    "manifests/server/role.pp": "a99508ee4e84034064c2cb1a121bdc62",
+    "manifests/server/service.pp": "8db858d1ea5b778cfef00e6ade81abb8",
+    "manifests/server/table_grant.pp": "bbc864f0ad8545837cf7782d1f7a1755",
+    "manifests/server/tablespace.pp": "beda12859757f7f677a711304dfd5185",
+    "manifests/server.pp": "019b2a2b8670bc07f31b4cb67a25156c",
+    "manifests/validate_db_connection.pp": "be61434836f7d25cc184126a91b2e3e6",
+    "spec/acceptance/client_spec.rb": "7edd034e4bd2c7a64b8bc2358abd3979",
+    "spec/acceptance/common_patterns_spec.rb": "86a1e044a6962783f317364eec9049c0",
+    "spec/acceptance/contrib_spec.rb": "9a5574b5ae7f5779176f34f55258f40e",
+    "spec/acceptance/lib/devel_spec.rb": "dc7862453e45860df176616993e83ce5",
+    "spec/acceptance/lib/java_spec.rb": "6fea5bdeaff9c5a8542631b7e64f3276",
+    "spec/acceptance/lib/python_spec.rb": "da55235c71b3486f2192baa929e17394",
+    "spec/acceptance/nodesets/centos-510-x64.yml": "5698f7e61292730c603e03f64fe19359",
+    "spec/acceptance/nodesets/centos-59-x64.yml": "57eb3e471b9042a8ea40978c467f8151",
+    "spec/acceptance/nodesets/centos-64-x64-pe.yml": "ec075d95760df3d4702abea1ce0a829b",
+    "spec/acceptance/nodesets/centos-64-x64.yml": "9cde7b5d2ab6a42366d2344c264d6bdc",
+    "spec/acceptance/nodesets/debian-607-x64.yml": "d566bf76f534e2af7c9a4605316d232c",
+    "spec/acceptance/nodesets/debian-73-x64.yml": "ba5a75e27644c48ad8f3564fb6d372a7",
+    "spec/acceptance/nodesets/default.yml": "9cde7b5d2ab6a42366d2344c264d6bdc",
+    "spec/acceptance/nodesets/ubuntu-server-10044-x64.yml": "dc0da2d2449f66c8fdae16593811504f",
+    "spec/acceptance/nodesets/ubuntu-server-12042-x64.yml": "78a3ee42652e26119d90aa62586565b2",
+    "spec/acceptance/postgresql_psql_spec.rb": "5248928fb0b1282d183d21acd9a63b52",
+    "spec/acceptance/server/config_entry_spec.rb": "f563a02ffd9f6b42535a43373810a393",
+    "spec/acceptance/server/database_grant_spec.rb": "9609eaac5249365f97359837f0e28c76",
+    "spec/acceptance/server/database_spec.rb": "cd6ff8bf6b8d9ea5fde14e7516aefa6b",
+    "spec/acceptance/server/db_spec.rb": "500838120c52f77f6c690ef4270fc0fd",
+    "spec/acceptance/server/grant_spec.rb": "11c562d043983f6a45d343622b088cd5",
+    "spec/acceptance/server/pg_hba_rule_spec.rb": "11078e160eae31e23b1a162250e63435",
+    "spec/acceptance/server/plperl_spec.rb": "4a24be65cc236e72325e45aa44b5a8fc",
+    "spec/acceptance/server/role_spec.rb": "f3ec771268e2eeae00e8f6a194766af6",
+    "spec/acceptance/server/table_grant_spec.rb": "0fd23e43bc93cec0f792b40bc774d19e",
+    "spec/acceptance/server/tablespace_spec.rb": "bdcf3cb90a0689021f6accadddc4f2fd",
+    "spec/acceptance/server_spec.rb": "618897142b71d4830093bbf64150908c",
+    "spec/acceptance/validate_db_connection_spec.rb": "64990bae66c4a8ea2cd5464bf51e6ed3",
+    "spec/spec_helper.rb": "d4e4a9a154ada34e7f13b0d8ece0f5db",
+    "spec/spec_helper_acceptance.rb": "b95d458abf8f6a67c6dfd1fa550a7ce5",
+    "spec/unit/classes/client_spec.rb": "b26438da8906e68d17e568252c1e43b5",
+    "spec/unit/classes/globals_spec.rb": "6a8ce2e649ea12c1b3ca04b423cae27f",
+    "spec/unit/classes/lib/devel_spec.rb": "11a2a75953d63a34b3e9ab7b6be2cc69",
+    "spec/unit/classes/lib/java_spec.rb": "bdb60c3b379a3788b3bf1f6c29b31c0a",
+    "spec/unit/classes/lib/python_spec.rb": "677c763c1a43a0e33ef7e6e819ec9f0a",
+    "spec/unit/classes/params_spec.rb": "2db946aa96446a1e38991c843b765323",
+    "spec/unit/classes/repo_spec.rb": "e70b90937dda9565e4948768c3ac7b7e",
+    "spec/unit/classes/server/contrib_spec.rb": "16528171ee3e058c06c5fea454dc9dbc",
+    "spec/unit/classes/server/initdb_spec.rb": "ece63fe900c3bcdb746e03a234b550c2",
+    "spec/unit/classes/server/plperl_spec.rb": "d00b94c70241848babaeee45143870ae",
+    "spec/unit/classes/server_spec.rb": "babaac49a4e5ae918f17328d86b72249",
+    "spec/unit/defines/server/config_entry_spec.rb": "cc2d9d0e4508d745f85c3446ccf76eb4",
+    "spec/unit/defines/server/database_grant_spec.rb": "e09254037c042efa5a29ba8d777c882f",
+    "spec/unit/defines/server/database_spec.rb": "090e9cf334843a4dc8b3f4eadce0109b",
+    "spec/unit/defines/server/db_spec.rb": "9f2181b0df771f4c6adf089b788adf42",
+    "spec/unit/defines/server/grant_spec.rb": "b8d8f46c7c4539747ee0b797a3a1834f",
+    "spec/unit/defines/server/pg_hba_rule_spec.rb": "3ed69d689bf28b56a030c543e7ce6775",
+    "spec/unit/defines/server/role_spec.rb": "fdb53fa637ccd79f8231e15383099137",
+    "spec/unit/defines/server/table_grant_spec.rb": "bb794a0b15dc74e8c8fa5d4878fd3c79",
+    "spec/unit/defines/server/tablespace_spec.rb": "68e7b9a193475491c58485debf1be220",
+    "spec/unit/defines/validate_db_connection_spec.rb": "88e57a8f780d381d75fe062f1178e1ce",
+    "spec/unit/functions/postgresql_acls_to_resources_hash_spec.rb": "e7740c3cd2110e2fcebab8356012267c",
+    "spec/unit/functions/postgresql_escape_spec.rb": "6e52e4f3ca56491f8ba2d1490a5fd1ad",
+    "spec/unit/functions/postgresql_password_spec.rb": "76034569a5ff627073c5e6ff69176ac3",
+    "spec/unit/provider/postgresql_conf/parsed_spec.rb": "7295501a413d8cf99df6f40ea50a36fc",
+    "spec/unit/puppet/provider/postgresql_psql/ruby_spec.rb": "c0ef725e4e7a5def13c29fad0c42478c",
+    "spec/unit/puppet/type/postgresql_psql_spec.rb": "2af5b74f7f4b89ff246818cd79488b3e",
+    "spec/unit/type/postgresql_conf_spec.rb": "76f460e0dfc90a1f38c407e5a0d4f463",
+    "templates/pg_hba_rule.conf": "13b46eecdfd359eddff71fa485ef2f54"
+  }
 }
