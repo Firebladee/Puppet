@@ -3,20 +3,20 @@
 class yum::repo::puppetlabs {
   yum::managed_yumrepo { 'puppetlabs-products':
     descr          => 'Puppet Labs Packages $releasever - $basearch',
-    baseurl        => 'http://yum.puppetlabs.com/repo/puppet/$releasever/products/$basearch',
-    gpgcheck       => 0,
+    baseurl        => 'http://yum.puppetlabs.com/el/6/products/$basearch',
+    gpgcheck       => 1,
     enabled        => 1,
     failovermethod => 'priority',
-    gpgkey         => 'http://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+    gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
     priority       => 15,
   }
   yum::managed_yumrepo { 'puppetlabs-deps':
     descr          => 'Puppet Labs Dependencies $releasever - $basearch',
-    baseurl        => 'http://yum.puppetlabs.com/repo/puppet/$releasever/dependencies/$basearch',
-    gpgcheck       => 0,
+    baseurl        => 'http://yum.puppetlabs.com/el/6/dependencies/$basearch',
+    gpgcheck       => 1,
     enabled        => 1,
     failovermethod => 'priority',
-    gpgkey         => 'http://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+    gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
     priority       => 15,
   }
 }
