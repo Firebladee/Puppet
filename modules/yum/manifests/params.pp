@@ -3,11 +3,11 @@
 class yum::params  {
 
 # Manage Automatic Updates method
-	$update = $yum_update ? {
-		"cron"     => "cron",
-		"updatesd" => "updatesd",
-		default    => "off",
-	}
+  $update = $yum_update ? {
+    'cron'     => 'cron',
+    'updatesd' => 'updatesd',
+    default    => 'off',
+  }
 
-	$extrarepo = $yum_extrarepo
+  $extrarepo = $yum_extrarepo
 }
