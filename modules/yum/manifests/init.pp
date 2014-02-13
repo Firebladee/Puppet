@@ -13,7 +13,7 @@
 # the Free Software Foundation.
 #
 # Apapted for Example42 by Alessandro Franceschi
-# Modifed for coral by Mark Greenhalgh
+# Modifed for varius clients by Mark Greenhalgh
 class yum {
 	include yum::params
 
@@ -51,6 +51,15 @@ class yum {
 			if $yum::params::extrarepo =~ /spacewalk-client/ { include yum::repo::spacewalk-client }
 			if $my_project { include "yum::${my_project}" }
 		}
+
+    Amazon: {
+      include yum::repo::amazon
+      if $yum::params::update == "cron" { include yum::cron }
+      if $yum::params::update == "updatesd" { include yum::updatesd }
+      if $yum::params::extrarepo =~ /epel/ { include yum::repo::epel }
+      if $yum::params::extrarepo =~ /puppetlabs/ { include yum::repo::puppetlabs }
+      if $my_project { include "yum::${my_project}" }
+    }
 
 		default: { fail("no managed repo yet for this distro") }
 	}
