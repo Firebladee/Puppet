@@ -1,3 +1,6 @@
 [submodule "modules/check_mk"]
 	path = modules/check_mk
 	url = git@github.com:Firebladee/check_mk.git
+[submodule "modules/omd"]
+	path = modules/omd
+	url = git@github.com:Firebladee/omd.git
