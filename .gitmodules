@@ -1,0 +1,3 @@
+[submodule "modules/check_mk"]
+	path = modules/check_mk
+	url = git@github.com:Firebladee/check_mk.git
