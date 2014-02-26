@@ -4,3 +4,6 @@
 [submodule "modules/omd"]
 	path = modules/omd
 	url = git@github.com:Firebladee/omd.git
+[submodule "modules/dirtree"]
+	path = modules/dirtree
+	url = git@github.com:AlexCline/puppet-dirtree.git
