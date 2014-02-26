@@ -5,7 +5,7 @@ Most of the recipes have been taken from Lab42
 Recipes that I have built that may be of interest to people are
 
 omd
-check_mk
+check_mk --now moved to it's own git repo.
 git
 
 enjoy
