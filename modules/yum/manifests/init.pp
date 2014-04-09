@@ -14,7 +14,10 @@
 #
 # Apapted for Example42 by Alessandro Franceschi
 # Modifed for varius clients by Mark Greenhalgh
-class yum {
+class yum (
+  $extrarepo = '',
+){
+
   include yum::params
 
 # We Manage Yum for Centos/RedHat Linux only
