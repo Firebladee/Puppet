@@ -16,7 +16,7 @@ class yum::prerequisites {
   file { 'yum_repos_d':
     ensure  => directory,
     path    => '/etc/yum.repos.d/',
-    source  => 'puppet:///common/empty',
+#    source  => 'puppet:///common/empty',
     recurse => true,
     purge   => true,
     force   => true,
@@ -29,7 +29,7 @@ class yum::prerequisites {
   #gpg key
   file { 'rpm_gpg':
     path    => '/etc/pki/rpm-gpg/',
-    source  => "puppet:///yum/${::operatingsystem}.${lsbmajdistrelease}/rpm-gpg/",
+    source  => "puppet:///modules/yum/${::operatingsystem}.${lsbmajdistrelease}/rpm-gpg/",
     recurse => true,
 #   purge   => true,
     ignore  => '.svn',

@@ -3,7 +3,7 @@
 class yum::repo::centos {
   yum::managed_yumrepo {'base':
     descr    => 'CentOS-$releasever - Base',
-    baseurl  => 'http://10.26.30.97/repo/CentOS/$releasever/os/$basearch/',
+    mirrorlist => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os',
     enabled  => 1,
     gpgcheck => 0,
     gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-5',
@@ -12,7 +12,7 @@ class yum::repo::centos {
 
   yum::managed_yumrepo {'updates':
     descr    => 'CentOS-$releasever - Updates',
-    baseurl  => 'http://10.26.30.97/repo/CentOS/$releasever/updates/$basearch/',
+    mirrorlist => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates',
     enabled  => 1,
     gpgcheck => 0,
     gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-5',
@@ -21,7 +21,7 @@ class yum::repo::centos {
 
   yum::managed_yumrepo {'extras':
     descr    => 'CentOS-$releasever - Extras',
-    baseurl  => 'http://10.26.30.97/repo/CentOS/$releasever/extras/$basearch/',
+    mirrorlist => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras',
     enabled  => 1,
     gpgcheck => 0,
     gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-5',
