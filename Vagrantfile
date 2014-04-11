@@ -1,33 +1,46 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
-VAGRANTFILE_API_VERSION = "2"
+domain = 'example.com'
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box      = "puppet"
-  config.vm.box_url  = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-puppet.box"
-  config.vm.hostname = "pupp.test.com"
+puppet_nodes = [
+  {:hostname => 'puppet', :ip => '172.16.32.10', :box => 'centos-65-x64-virtualbox-puppet', :fwdhost => 8140, :fwdguest => 8140, :ram => 512},
+  {:hostname => 'client1', :ip => '172.16.32.11', :box => 'centos-65-x64-virtualbox-puppet', :web => 4567},
+  {:hostname => 'client2', :ip => '172.16.32.12', :box => 'centos-65-x64-virtualbox-puppet', :web => 4568},
+]
 
-  # Provision via puppet.
-  config.vm.provision :puppet do |puppet|
+Vagrant.configure("2") do |config|
+  puppet_nodes.each do |node|
+    config.vm.define node[:hostname] do |node_config|
+      node_config.vm.box = node[:box]
+      node_config.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/' + node_config.vm.box + '.box'
+      node_config.vm.hostname = node[:hostname] + '.' + domain
+      node_config.vm.network :private_network, ip: node[:ip]
 
-    puppet.manifests_path = "manifests"
-    puppet.module_path    = "modules"
-    puppet.manifest_file  = "site.pp"
-    puppet.options        = "--verbose --debug"
-#    puppet.manifests_path = "vagrant"
-#    puppet.module_path    = "../"
-#    puppet.manifest_file  = "site.pp"
-#    puppet.options        = "--verbose --debug"
-#    puppet.hiera_config_path = "hiera.yaml"
-#    puppet.facter = {
-#      "kap_role" => "web",
-#      "kap_proj" => "eltsite",
-#      "kap_envi" => "prod"
-#    }
+      if node[:fwdhost]
+        node_config.vm.network :forwarded_port, guest: node[:fwdguest], host: node[:fwdhost]
+        node_config.vm.network :forwarded_port, guest: 8080, host:18080
+      end
+
+#      if node[:web]
+#        node_config.vm.network :forwarded_port, host:80, guest:[:web]
+#      end
+
+      memory = node[:ram] ? node[:ram] : 256;
+      node_config.vm.provider :virtualbox do |vb|
+        vb.customize [
+          'modifyvm', :id,
+          '--name', node[:hostname],
+          '--memory', memory.to_s
+        ]
+      end
+
+      node_config.vm.provision :puppet do |puppet|
+        puppet.manifests_path = 'manifests'
+        puppet.module_path    = 'modules'
+        puppet.manifest_file  = "site.pp"
+#        puppet.options        = "--verbose --debug"
+      end
+    end
   end
-
-  config.vm.network :forwarded_port, host:4567, guest: 80
-
 end
