@@ -22,9 +22,9 @@ Vagrant.configure("2") do |config|
         node_config.vm.network :forwarded_port, guest: 8080, host:18080
       end
 
-#      if node[:web]
-#        node_config.vm.network :forwarded_port, host:80, guest:[:web]
-#      end
+      if node[:web]
+        node_config.vm.network :forwarded_port, guest:80, host: node[:web]
+      end
 
       memory = node[:ram] ? node[:ram] : 256;
       node_config.vm.provider :virtualbox do |vb|

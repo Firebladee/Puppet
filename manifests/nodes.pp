@@ -17,6 +17,7 @@ include vagrant
     class { 'puppetdb':
       node_purge_ttl => '2d',
       node_ttl       => '2d',
+      listen_address => '0.0.0.0',
     }
     class { 'puppetdb::master::config': 
       restart_puppet => false,
