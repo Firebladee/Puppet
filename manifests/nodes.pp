@@ -9,16 +9,16 @@ include vagrant
   }
 }
 
-node /^puppet*/ {
+node /^puppet\.example\.com$/ inherits default {
 
 }
 
-node /^client1*/ {
+node /^client1\.example\.com$/ inherits default {
   class { 'omd::install':}
   $omd_site = 'test'
   include omd::site::add
 }
 
-node /^client2*/ {
+node /^client2\.example\.com$/ inherits default {
 
 }
