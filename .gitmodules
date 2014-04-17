@@ -7,3 +7,6 @@
 [submodule "modules/dirtree"]
 	path = modules/dirtree
 	url = git@github.com:AlexCline/puppet-dirtree.git
+[submodule "modules/3fs"]
+	path = modules/3fs
+	url = git@github.com:Firebladee/3fs.git

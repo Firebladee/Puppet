@@ -17,8 +17,16 @@ node /^client1\.example\.com$/ inherits default {
   class { 'omd::install':}
   $omd_site = 'test'
   include omd::site::add
+
+  class {'check_mk':
+    install  => 'server',
+    omd_site => 'test',
+  }
 }
 
 node /^client2\.example\.com$/ inherits default {
-
+  class {'check_mk':
+    install  => 'agent',
+    omd_site => 'test',
+  }
 }
