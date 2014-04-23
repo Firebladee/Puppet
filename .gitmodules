@@ -13,3 +13,6 @@
 [submodule "modules/moodle"]
 	path = modules/moodle
 	url = git@github.com:Firebladee/moodle.git
+[submodule "modules/apache"]
+	path = modules/apache
+	url = https://github.com/puppetlabs/puppetlabs-apache
