@@ -10,7 +10,10 @@ include vagrant
 }
 
 node /^puppet\.example\.com$/ inherits default {
-
+  class {'check_mk':
+    install  => 'agent',
+    omd_site => 'test',
+  }
 }
 
 node /^client1\.example\.com$/ inherits default {
@@ -29,4 +32,6 @@ node /^client2\.example\.com$/ inherits default {
     install  => 'agent',
     omd_site => 'test',
   }
+
+  class {'moodle': }
 }
