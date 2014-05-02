@@ -2,11 +2,11 @@ node 'default' {
 
 include vagrant
 
-  Yumrepo <| |> -> Package <| provider != 'rpm' |>
+#  Yumrepo <| |> -> Package <| provider != 'rpm' |>
 
-  class {'yum':
-    extrarepo => ['omd','epel','puppetlabs',]
-  }
+#  class {'yum':
+#    extrarepo => ['omd','epel','puppetlabs',]
+#  }
 }
 
 node /^puppet\.example\.com$/ inherits default {
