@@ -1,241 +1,230 @@
-# /etc/puppet/modules/mysql/manifests/params.pp
+# Private class: See README.md.
+class mysql::params {
 
-class mysql::params  {
+  $manage_config_file     = true
+  $old_root_password      = ''
+  $purge_conf_dir         = false
+  $restart                = false
+  $root_password          = 'UNSET'
+  $server_package_ensure  = 'present'
+  $server_service_manage  = true
+  $server_service_enabled = true
+  # mysql::bindings
+  $bindings_enable         = false
+  $java_package_ensure     = 'present'
+  $java_package_provider   = undef
+  $perl_package_ensure     = 'present'
+  $perl_package_provider   = undef
+  $php_package_ensure      = 'present'
+  $php_package_provider    = undef
+  $python_package_ensure   = 'present'
+  $python_package_provider = undef
+  $ruby_package_ensure     = 'present'
+  $ruby_package_provider   = undef
 
-## DEFAULTS FOR VARIABLES USERS CAN SET
-# (Here are set the defaults, provide your custom variables externally)
-# (The default used is in the line with '')
 
-
-    $logfile = $operatingsystem ? {
-        default => "/var/log/mysqld.log",
+  case $::osfamily {
+    'RedHat': {
+      if $::operatingsystem == 'Fedora' and (is_integer($::operatingsystemrelease) and $::operatingsystemrelease >= 19 or $::operatingsystemrelease == "Rawhide") {
+        $client_package_name = 'mariadb'
+        $server_package_name = 'mariadb-server'
+      } else {
+        $client_package_name = 'mysql'
+        $server_package_name = 'mysql-server'
+      }
+      $basedir             = '/usr'
+      $config_file         = '/etc/my.cnf'
+      $datadir             = '/var/lib/mysql'
+      $log_error           = '/var/log/mysqld.log'
+      $pidfile             = '/var/run/mysqld/mysqld.pid'
+      $root_group          = 'root'
+      $server_service_name = 'mysqld'
+      $socket              = '/var/lib/mysql/mysql.sock'
+      $ssl_ca              = '/etc/mysql/cacert.pem'
+      $ssl_cert            = '/etc/mysql/server-cert.pem'
+      $ssl_key             = '/etc/mysql/server-key.pem'
+      $tmpdir              = '/tmp'
+      # mysql::bindings
+      $java_package_name   = 'mysql-connector-java'
+      $perl_package_name   = 'perl-DBD-MySQL'
+      $php_package_name    = 'php-mysql'
+      $python_package_name = 'MySQL-python'
+      $ruby_package_name   = 'ruby-mysql'
     }
 
-
-## MODULE INTERNAL VARIABLES
-# (Modify to adapt to unsupported OSes)
-
-    $packagename = $operatingsystem ? {
-        default => "mysql-server",
+    'Suse': {
+      $client_package_name   = $::operatingsystem ? {
+        /OpenSuSE/           => 'mysql-community-server-client',
+        /(SLES|SLED)/        => 'mysql-client',
+      }
+      $server_package_name   = $::operatingsystem ? {
+        /OpenSuSE/           => 'mysql-community-server',
+        /(SLES|SLED)/        => 'mysql',
+      }
+      $basedir             = '/usr'
+      $config_file         = '/etc/my.cnf'
+      $datadir             = '/var/lib/mysql'
+      $log_error           = $::operatingsystem ? {
+        /OpenSuSE/         => '/var/log/mysql/mysqld.log',
+        /(SLES|SLED)/      => '/var/log/mysqld.log',
+      }
+      $pidfile             = $::operatingsystem ? {
+        /OpenSuSE/         => '/var/run/mysql/mysqld.pid',
+        /(SLES|SLED)/      => '/var/lib/mysql/mysqld.pid',
+      }
+      $root_group          = 'root'
+      $server_service_name = 'mysql'
+      $socket              = $::operatingsystem ? {
+        /OpenSuSE/         => '/var/run/mysql/mysql.sock',
+        /(SLES|SLED)/      => '/var/lib/mysql/mysql.sock',
+      }
+      $ssl_ca              = '/etc/mysql/cacert.pem'
+      $ssl_cert            = '/etc/mysql/server-cert.pem'
+      $ssl_key             = '/etc/mysql/server-key.pem'
+      $tmpdir              = '/tmp'
+      # mysql::bindings
+      $java_package_name   = 'mysql-connector-java'
+      $perl_package_name   = 'perl-DBD-mysql'
+      $php_package_name    = 'apache2-mod_php53'
+      $python_package_name = 'python-mysql'
+      $ruby_package_name   = $::operatingsystem ? {
+        /OpenSuSE/         => 'rubygem-mysql',
+        /(SLES|SLED)/      => 'ruby-mysql',
+      }
     }
 
-    $packagename_client = $operatingsystem ? {
-        redhat  => "mysql",
-        centos  => "mysql",
-        default => "mysql-client",
+    'Debian': {
+      $client_package_name = 'mysql-client'
+      $server_package_name = 'mysql-server'
+
+      $basedir             = '/usr'
+      $config_file         = '/etc/mysql/my.cnf'
+      $datadir             = '/var/lib/mysql'
+      $log_error           = '/var/log/mysql/error.log'
+      $pidfile             = '/var/run/mysqld/mysqld.pid'
+      $root_group          = 'root'
+      $server_service_name = 'mysql'
+      $socket              = '/var/run/mysqld/mysqld.sock'
+      $ssl_ca              = '/etc/mysql/cacert.pem'
+      $ssl_cert            = '/etc/mysql/server-cert.pem'
+      $ssl_key             = '/etc/mysql/server-key.pem'
+      $tmpdir              = '/tmp'
+      # mysql::bindings
+      $java_package_name   = 'libmysql-java'
+      $perl_package_name   = 'libdbd-mysql-perl'
+      $php_package_name    = 'php5-mysql'
+      $python_package_name = 'python-mysqldb'
+      $ruby_package_name   = 'libmysql-ruby'
     }
 
-    $servicename = $operatingsystem ? {
-        redhat  => "mysqld",
-        centos  => "mysqld",
-        default => "mysql",
+    'FreeBSD': {
+      $client_package_name = 'databases/mysql55-client'
+      $server_package_name = 'databases/mysql55-server'
+      $basedir             = '/usr/local'
+      $config_file         = '/var/db/mysql/my.cnf'
+      $datadir             = '/var/db/mysql'
+      $log_error           = "/var/db/mysql/${::hostname}.err"
+      $pidfile             = '/var/db/mysql/mysql.pid'
+      $root_group          = 'wheel'
+      $server_service_name = 'mysql-server'
+      $socket              = '/tmp/mysql.sock'
+      $ssl_ca              = undef
+      $ssl_cert            = undef
+      $ssl_key             = undef
+      $tmpdir              = '/tmp'
+      # mysql::bindings
+      $java_package_name   = 'databases/mysql-connector-java'
+      $perl_package_name   = 'p5-DBD-mysql'
+      $php_package_name    = 'php5-mysql'
+      $python_package_name = 'databases/py-MySQLdb'
+      $ruby_package_name   = 'databases/ruby-mysql'
     }
 
-    $processname = $operatingsystem ? {
-        default => "mysqld",
-    }
-
-    $hasstatus = $operatingsystem ? {
-        debian  => false,
-        ubuntu  => false,
-        default => true,
-    }
-
-    $configfile = $operatingsystem ? {
-        debian  => "/etc/mysql/my.cnf",
-        ubuntu  => "/etc/mysql/my.cnf",
-        default => "/etc/my.cnf",
-    }
-
-    $configfile_mode = $operatingsystem ? {
-        default => "644",
-    }
-
-    $configfile_owner = $operatingsystem ? {
-        default => "root",
-    }
-
-    $configfile_group = $operatingsystem ? {
-        default => "root",
-    }
-
-    $configdir = $operatingsystem ? {
-        default => "/etc/mysql/conf.d",
-    }
-
-    $initconfigfile = $operatingsystem ? {
-        debian  => "/etc/default/mysql",
-        ubuntu  => "/etc/default/mysql",
-        default => "/etc/sysconfig/mysqld",
-    }
-    
-    # Used by monitor class
-    $pidfile = $operatingsystem ? {
-        default  => "/var/run/mysqld/mysqld.pid",
-    }
-
-    # Used by backup class
-    $datadir = $operatingsystem ? {
-        default => "/var/lib/mysql",
-    }
-
-    # Used by backup class - Provide the file name, if there's no dedicated dir
-    $logdir = $operatingsystem ? {
-        default => "/var/log/mysql",
-    }
-
-    # Used by monitor and firewall class
-    # If you need to define additional ports, call them $protocol1/$port1 and add the relevant
-    # parts in firewall.pp and monitor.pp
-    $protocol = "tcp"
-    $port = "3306"
-    
-
-
-## DEFAULTS FOR MONITOR CLASS
-# These are settings that influence the (optional) mysql::monitor class
-# You can define these variables or leave the defaults
-# The apparently complex variables assignements below follow this logic:
-# - If no user variable is set, a reasonable default is used
-# - If the user has set a host-wide variable (ex: $monitor_target ) that one is set
-# - The host-wide variable can be overriden by a module specific one (ex: $mysql_monitor_target)
-
-    # How the monitor server refers to the monitor target 
-    $monitor_target_real = $mysql_monitor_target ? {
-        ''      => $monitor_target ? {
-           ''      => "${fqdn}",
-           default => $monitor_target,
-        },
-        default => "$mysql_monitor_target",
-    }
-
-    # BaseUrl to access this host
-    $monitor_baseurl_real = $mysql_monitor_baseurl ? {
-        ''      => $monitor_baseurl ? {
-           ''      => "http://${fqdn}",
-           default => $monitor_baseurl,
-        },
-        default => "${mysql_monitor_baseurl}",
-    }
-
-    # Pattern to look for in the URL defined in mysql::monitor class
-    $monitor_url_pattern = $mysql_monitor_url_pattern ? {
-        ''      => "OK",
-        default => "${mysql_monitor_url_pattern}",
-    }
-
-    # If mysql port monitoring is enabled 
-    $monitor_port_enable = $mysql_monitor_port ? {
-        ''      => $monitor_port ? {
-           ''      => true,
-           default => $monitor_port,
-        },
-        default => $mysql_monitor_port,
-    }
-
-    # If mysql url monitoring is enabled 
-    $monitor_url_enable = $mysql_monitor_url ? {
-        ''      => $monitor_url ? {
-           ''      => false,
-           default => $monitor_url,
-        },
-        default => $mysql_monitor_url,
-    }
-
-    # If mysql process monitoring is enabled 
-    $monitor_process_enable = $mysql_monitor_process ? {
-        ''      => $monitor_process ? {
-           ''      => true,
-           default => $monitor_process,
-        },
-        default => $mysql_monitor_process,
-    }
-
-    # If mysql plugin monitoring is enabled 
-    $monitor_plugin_enable = $mysql_monitor_plugin ? {
-        ''      => $monitor_plugin ? {
-           ''      => false,
-           default => $monitor_plugin,
-        },
-        default => $mysql_monitor_plugin,
-    }
-
-## DEFAULTS FOR BACKUP CLASS
-# These are settings that influence the (optional) mysql::backup class
-# You can define these variables or leave the defaults
-
-    # How the backup server refers to the backup target 
-    $backup_target_real = $mysql_backup_target ? {
-        ''      => $backup_target ? {
-           ''      => "${fqdn}",
-           default => $backup_target,
-        },
-        default => "$mysql_backup_target",
-    }
-  
-    # Frequency of backups
-    $backup_frequency = $mysql_backup_frequency ? {
-        ''      => "daily",
-        default => "$mysql_backup_frequency",
-    }
-
-    # If mysql data have to be backed up
-    $backup_data_enable = $mysql_backup_data ? {
-        ''      => $backup_data ? {
-           ''      => true,
-           default => $backup_data,
-        },
-        default => $mysql_backup_data,
-    }
-
-    # If mysql logs have to be backed up
-    $backup_log_enable = $mysql_backup_log ? {
-        ''      => $backup_log ? {
-           ''      => true,
-           default => $backup_log,
-        },
-        default => $mysql_backup_log,
-    }
-
-
-## DEFAULTS FOR FIREWALL CLASS
-# These are settings that influence the (optional) mysql::firewall class
-# You can define these variables or leave the defaults
-
-    # Source IPs that can access this service - Use iptables friendly format
-    $firewall_source_real = $mysql_firewall_source ? {
-        ''      => $firewall_source ? {
-           ''      => "0.0.0.0/0",
-           default => $firewall_source,
-        },
-        default => "$mysql_firewall_source",
-    }
-
-    # Destination IP to use for this host (Default facter's $ipaddress)
-    $firewall_destination_real = $mysql_firewall_destination ? {
-        ''      => $firewall_destination ? {
-           ''      => "${ipaddress}",
-           default => $firewall_destination,
-        },
-        default => "$mysql_firewall_destination",
-    }
-
-## FILE SERVING SOURCE
-# Sets the correct source for static files
-# In order to provide files from different sources without modifying the module
-# you can override the default source path setting the variable $base_source
-# Ex: $base_source="puppet://ip.of.fileserver" or $base_source="puppet://$servername/myprojectmodule"
-# What follows automatically manages the new source standard (with /modules/) from 0.25 
-
-    case $base_source {
-        '': {
-            $general_base_source = $puppetversion ? {
-                /(^0.25)/ => "puppet:///modules",
-                /(^0.)/   => "puppet://$servername",
-                default   => "puppet:///modules",
-            }
+    default: {
+      case $::operatingsystem {
+        'Amazon': {
+          $client_package_name = 'mysql'
+          $server_package_name = 'mysql-server'
+          $basedir             = '/usr'
+          $config_file         = '/etc/my.cnf'
+          $datadir             = '/var/lib/mysql'
+          $log_error           = '/var/log/mysqld.log'
+          $pidfile             = '/var/run/mysqld/mysqld.pid'
+          $root_group          = 'root'
+          $server_service_name = 'mysqld'
+          $socket              = '/var/lib/mysql/mysql.sock'
+          $ssl_ca              = '/etc/mysql/cacert.pem'
+          $ssl_cert            = '/etc/mysql/server-cert.pem'
+          $ssl_key             = '/etc/mysql/server-key.pem'
+          $tmpdir              = '/tmp'
+          # mysql::bindings
+          $java_package_name   = 'mysql-connector-java'
+          $perl_package_name   = 'perl-DBD-MySQL'
+          $php_package_name    = 'php-mysql'
+          $python_package_name = 'MySQL-python'
+          $ruby_package_name   = 'ruby-mysql'
         }
-        default: { $general_base_source=$base_source }
+
+        default: {
+          fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily RedHat, Debian, and FreeBSD, or operatingsystem Amazon")
+        }
+      }
     }
+  }
+
+  case $::operatingsystem {
+    'Ubuntu': {
+      $server_service_provider = upstart
+    }
+    default: {
+      $server_service_provider = undef
+    }
+  }
+
+  $default_options = {
+    'client'          => {
+      'port'          => '3306',
+      'socket'        => $mysql::params::socket,
+    },
+    'mysqld_safe'        => {
+      'nice'             => '0',
+      'log-error'        => $mysql::params::log_error,
+      'socket'           => $mysql::params::socket,
+    },
+    'mysqld'                  => {
+      'basedir'               => $mysql::params::basedir,
+      'bind-address'          => '127.0.0.1',
+      'datadir'               => $mysql::params::datadir,
+      'expire_logs_days'      => '10',
+      'key_buffer_size'       => '16M',
+      'log-error'             => $mysql::params::log_error,
+      'max_allowed_packet'    => '16M',
+      'max_binlog_size'       => '100M',
+      'max_connections'       => '151',
+      'myisam_recover'        => 'BACKUP',
+      'pid-file'              => $mysql::params::pidfile,
+      'port'                  => '3306',
+      'query_cache_limit'     => '1M',
+      'query_cache_size'      => '16M',
+      'skip-external-locking' => true,
+      'socket'                => $mysql::params::socket,
+      'ssl'                   => false,
+      'ssl-ca'                => $mysql::params::ssl_ca,
+      'ssl-cert'              => $mysql::params::ssl_cert,
+      'ssl-key'               => $mysql::params::ssl_key,
+      'thread_cache_size'     => '8',
+      'thread_stack'          => '256K',
+      'tmpdir'                => $mysql::params::tmpdir,
+      'user'                  => 'mysql',
+    },
+    'mysqldump'             => {
+      'max_allowed_packet'  => '16M',
+      'quick'               => true,
+      'quote-names'         => true,
+    },
+    'isamchk'      => {
+      'key_buffer_size' => '16M',
+    },
+  }
 
 }
