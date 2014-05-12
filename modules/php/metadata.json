@@ -1,0 +1,46 @@
+{
+  "name": "example42-php",
+  "version": "2.0.17",
+  "summary": "Puppet module for php",
+  "author": "Alessandro Franceschi",
+  "description": "This module installs and manages php. Check README.rdoc for details. Puppi is required for some common functions: you can install them without using the whole module. Monitor and firewall dependencies are needed only if the relevant features are enabled",
+  "dependencies": [
+    {
+      "name": "example42/puppi",
+      "version_requirement": ">= 2.0.0"
+    }
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "LICENSE": "a300b604c66de62cf6e923cca89c9d83",
+    "Modulefile": "1d77110c6102f3c02c4d734d73da0a13",
+    "README.md": "a72bfdc19f089f5f81f1ce4636f9845d",
+    "Rakefile": "e90d68823ff237c89224eb139f8926ad",
+    "lib/facter/php_fact_extension_dir.rb": "97b8e9f42f7ec30aca42ccee6a328b50",
+    "lib/facter/php_fact_version.rb": "8efe9a38dcf371d63a2ea0706741aa4b",
+    "manifests/augeas.pp": "677f18640ba58fa7715b7722f4a7e207",
+    "manifests/conf.pp": "c62e17b73ebec17a2a4850f0d17453cc",
+    "manifests/devel.pp": "815fcdea13fcdda39680910b1b17563d",
+    "manifests/ini.pp": "a771a87e38b9d18f140ba2ab5db9f9b9",
+    "manifests/init.pp": "283a85ed52ee2df2c24873eb8f4d000f",
+    "manifests/module.pp": "b9d2672cc6e6db9cc8e22632b0b4e491",
+    "manifests/params.pp": "0e0d8c46f46e365145cc82f196977ecc",
+    "manifests/pear/config.pp": "36a86ae69ef617a7e21b5e748484c996",
+    "manifests/pear/module.pp": "827d16d902a03357060c2e8798cf2b7a",
+    "manifests/pear.pp": "bd600f9a96f642ccee00046b05860d95",
+    "manifests/pecl/config.pp": "459ff4acf14ce5d6e29def2ec9c6dd59",
+    "manifests/pecl/module.pp": "161b092a2ef8ac96fc927eb881533147",
+    "manifests/spec.pp": "54e08deee642afe3d738450de38eb50d",
+    "spec/classes/php_spec.rb": "d9413b818824e2c16d2098ba05d740c9",
+    "spec/defines/php_module_spec.rb": "cb2bcf4c22e8e59e7f7d5223c77e62b7",
+    "spec/defines/php_pear_module_spec.rb": "0c45b820714b5092e5fd51d84b97815d",
+    "spec/spec_helper.rb": "0db89c9a486df193c0e40095422e19dc",
+    "templates/extra-ini.erb": "afde1d09e3b159563f4e030e862c3a87",
+    "templates/spec.erb": "95554a191230174b3ba5942f8d8d5b1e"
+  },
+  "source": "https://github.com/example42/puppet-php",
+  "project_page": "http://www.example42.com",
+  "license": "Apache2"
+}
