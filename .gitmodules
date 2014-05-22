@@ -13,3 +13,6 @@
 [submodule "modules/apache"]
 	path = modules/apache
 	url = https://github.com/puppetlabs/puppetlabs-apache
+[submodule "modules/puppetdb"]
+	path = modules/puppetdb
+	url = https://github.com/puppetlabs/puppetlabs-puppetdb.git
