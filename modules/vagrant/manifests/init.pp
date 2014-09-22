@@ -30,7 +30,7 @@ class vagrant {
     }
     ini_setting { 'puppet.conf/main/modulepath':
       setting => 'modulepath',
-     value   => '/vagrant/modules',
+      value   => '/vagrant/modules',
     }
     ini_setting { 'puppet.conf/main/manifestdir':
       setting => 'manifestdir',
