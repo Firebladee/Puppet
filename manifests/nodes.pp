@@ -1,6 +1,6 @@
 node 'default' {
 
-include vagrant
+  include vagrant
 
   Yumrepo <| |> -> Package <| provider != 'rpm' |>
 
