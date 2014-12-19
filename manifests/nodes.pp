@@ -25,6 +25,7 @@ node /^client1\.example\.com$/ inherits default {
     install  => 'server',
     omd_site => 'test',
   }
+
 }
 
 node /^client2\.example\.com$/ inherits default {
@@ -33,5 +34,6 @@ node /^client2\.example\.com$/ inherits default {
     omd_site => 'test',
   }
 
-  class {'moodle': }
+#  class {'moodle': }
+
 }
