@@ -13,7 +13,9 @@ vagrant ssh puppet
 sudo -s
 yum remove puppetdb
 rm -rf /etc/puppetdb
-puppet agent --test
+
+Exit the puppet vm and then
+puppet provision puppet
 
 This will get the puppet master to work
 

@@ -32,6 +32,7 @@ node /^client2\.example\.com$/ inherits default {
   class {'check_mk':
     install  => 'agent',
     omd_site => 'test',
+    check_mk_tags => 'tag_test',
   }
 
 #  class {'moodle': }
