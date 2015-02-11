@@ -35,6 +35,6 @@ node /^client2\.example\.com$/ inherits default {
     check_mk_tags => 'tag_test',
   }
 
-#  class {'moodle': }
+  class {'moodle': }
 
 }
