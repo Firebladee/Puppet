@@ -15,7 +15,7 @@ yum remove puppetdb
 rm -rf /etc/puppetdb
 
 Exit the puppet vm and then
-puppet provision puppet
+vagrant provision puppet
 
 This will get the puppet master to work
 
