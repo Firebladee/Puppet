@@ -6,6 +6,8 @@ forge "https://forgeapi.puppetlabs.com"
 # A module from the Puppet Forge
 mod 'puppetlabs-apache'
 mod 'puppetlabs-apt'
+mod 'puppetlabs-stdlib'
+mod 'puppetlabs-concat'
 
 # A module from git
 # mod 'puppetlabs-ntp',

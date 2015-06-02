@@ -2,3 +2,4 @@
 .tmp/
 modules/
 *.swp
+.librarian/
