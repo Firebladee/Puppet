@@ -1,15 +1,6 @@
-[submodule "modules/check_mk"]
-	path = modules/check_mk
-	url = git@github.com:Firebladee/check_mk.git
 [submodule "modules/omd"]
 	path = modules/omd
 	url = git@github.com:Firebladee/omd.git
-[submodule "modules/dirtree"]
-	path = modules/dirtree
-	url = git@github.com:AlexCline/puppet-dirtree.git
-[submodule "modules/moodle"]
-	path = modules/moodle
-	url = git@github.com:Firebladee/moodle.git
 [submodule "modules/apache"]
 	path = modules/apache
 	url = https://github.com/puppetlabs/puppetlabs-apache

@@ -8,6 +8,16 @@ mod 'puppetlabs-apache'
 mod 'puppetlabs-apt'
 mod 'puppetlabs-stdlib'
 mod 'puppetlabs-concat'
+mod 'Firebladee-check_mk',
+  :git => 'git@github.com:Firebladee/check_mk.git'
+mod 'AlexCline-dirtree'
+mod 'puppetlabs-firewall'
+mod 'puppetlabs-inifile'
+mod 'Firebladee-moodle',
+  :git => 'git@github.com:Firebladee/moodle.git'
+mod 'puppetlabs-mysql'
+mod 'maestrodev-wget'
+mod 'puppetlabs-mysql'
 
 # A module from git
 # mod 'puppetlabs-ntp',
