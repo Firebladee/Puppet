@@ -3,25 +3,26 @@
 
 forge "https://forgeapi.puppetlabs.com"
 
-# A module from the Puppet Forge
-mod 'puppetlabs-apache'
-mod 'puppetlabs-apt'
-mod 'puppetlabs-stdlib'
-mod 'puppetlabs-concat'
-mod 'Firebladee-check_mk',
-  :git => 'git@github.com:Firebladee/check_mk.git'
-mod 'AlexCline-dirtree'
-mod 'puppetlabs-firewall'
-mod 'puppetlabs-inifile'
-mod 'Firebladee-moodle',
-  :git => 'git@github.com:Firebladee/moodle.git'
+#mod 'puppetlabs-apache'
+#mod 'puppetlabs-apt'
+#mod 'puppetlabs-stdlib'
+#mod 'puppetlabs-concat'
+#mod 'Firebladee-check_mk',
+#  :git => 'git@github.com:Firebladee/check_mk.git'
+#mod 'Firebladee-omd',
+#  :git => 'git@github.com:Firebladee/omd.git'
+#mod 'AlexCline-dirtree'
+#mod 'puppetlabs-firewall'
+#mod 'puppetlabs-inifile'
+#mod 'Firebladee-moodle',
+#  :git => 'git@github.com:Firebladee/moodle.git'
+#mod 'puppetlabs-mysql'
+#mod 'maestrodev-wget'
 mod 'puppetlabs-mysql'
-mod 'maestrodev-wget'
-mod 'puppetlabs-mysql'
-
-# A module from git
-# mod 'puppetlabs-ntp',
-#   :git => 'git://github.com/puppetlabs/puppetlabs-ntp.git'
+mod 'example42-php'
+mod 'puppetlabs-dashboard'
+mod 'puppetlabs-puppetdb'
+mod 'puppetlabs-postgresql'
 
 # A module from a git branch/tag
 # mod 'puppetlabs-apt',
