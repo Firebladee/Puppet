@@ -1,16 +1,18 @@
 FORGE
   remote: https://forgeapi.puppetlabs.com
   specs:
+    AlexCline-dirtree (0.2.1)
     croddy-make (0.0.5)
     example42-php (2.0.20)
       example42-puppi (>= 2.0.0)
     example42-puppi (2.1.11)
+    maestrodev-wget (1.7.0)
     nanliu-staging (1.0.3)
-    puppetlabs-apache (1.4.1)
+    puppetlabs-apache (1.5.0)
       puppetlabs-concat (< 2.0.0, >= 1.1.1)
       puppetlabs-stdlib (< 5.0.0, >= 2.4.0)
-    puppetlabs-apt (1.8.0)
-      puppetlabs-stdlib (>= 2.2.1)
+    puppetlabs-apt (2.1.0)
+      puppetlabs-stdlib (< 5.0.0, >= 4.5.0)
     puppetlabs-concat (1.2.3)
       puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
     puppetlabs-dashboard (0.0.4)
@@ -20,7 +22,7 @@ FORGE
     puppetlabs-firewall (1.6.0)
     puppetlabs-gcc (0.3.0)
       puppetlabs-stdlib (< 5.0.0, >= 2.0.0)
-    puppetlabs-inifile (1.2.0)
+    puppetlabs-inifile (1.3.0)
     puppetlabs-mysql (3.4.0)
       nanliu-staging (~> 1.0)
       puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
@@ -30,11 +32,11 @@ FORGE
       puppetlabs-gcc (< 1.0.0, >= 0.2.0)
       puppetlabs-ruby (< 1.0.0, >= 0.1.0)
       puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
-    puppetlabs-postgresql (4.3.0)
-      puppetlabs-apt (< 2.0.0, >= 1.8.0)
+    puppetlabs-postgresql (4.4.1)
+      puppetlabs-apt (< 3.0.0, >= 1.8.0)
       puppetlabs-concat (< 2.0.0, >= 1.1.0)
       puppetlabs-stdlib (~> 4.0)
-    puppetlabs-puppetdb (4.2.1)
+    puppetlabs-puppetdb (4.3.0)
       puppetlabs-firewall (< 2.0.0, >= 1.1.3)
       puppetlabs-inifile (< 2.0.0, >= 1.1.3)
       puppetlabs-postgresql (< 5.0.0, >= 4.0.0)
@@ -43,10 +45,48 @@ FORGE
       puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
     puppetlabs-stdlib (4.6.0)
 
+GIT
+  remote: git@github.com:Firebladee/check_mk.git
+  ref: master
+  sha: 649ec6c47666f918cc8528d09eb3d3bdaa1878dc
+  specs:
+    Firebladee-check_mk (1.0.0)
+      Firebladee-omd (>= 1.0.0)
+      puppetlabs-puppetdb (>= 3.0.0)
+
+GIT
+  remote: git@github.com:Firebladee/moodle.git
+  ref: master
+  sha: 1b8b8ac5def9a123abf12061bdf24b0e9cb34abb
+  specs:
+    Firebladee-moodle (0.0.3)
+      AlexCline-dirtree (>= 0.2.1)
+      maestrodev-wget (>= 1.4.1)
+      puppetlabs-apache (>= 1.0.1)
+      puppetlabs-stdlib (>= 4.1.0)
+
+GIT
+  remote: git@github.com:Firebladee/omd.git
+  ref: master
+  sha: 3afa28ad1a6b4f1597a4f0e24b005b6dfed3d250
+  specs:
+    Firebladee-omd (1.0.0)
+
 DEPENDENCIES
+  AlexCline-dirtree (>= 0)
+  Firebladee-check_mk (>= 0)
+  Firebladee-moodle (>= 0)
+  Firebladee-omd (>= 0)
   example42-php (>= 0)
+  maestrodev-wget (>= 0)
+  puppetlabs-apache (>= 0)
+  puppetlabs-apt (>= 0)
+  puppetlabs-concat (>= 0)
   puppetlabs-dashboard (>= 0)
+  puppetlabs-firewall (>= 0)
+  puppetlabs-inifile (>= 0)
   puppetlabs-mysql (>= 0)
   puppetlabs-postgresql (>= 0)
   puppetlabs-puppetdb (>= 0)
+  puppetlabs-stdlib (>= 0)
 
