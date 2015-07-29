@@ -3,3 +3,5 @@
 modules/
 *.swp
 .librarian/
+.kitchen/
+.kitchen.local.yml

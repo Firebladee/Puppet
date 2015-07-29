@@ -40,6 +40,15 @@ class vagrant {
       setting => 'server',
       value   => 'puppet.example.com',
     }
+    if $::virtual == 'virtualbox' {
+      file { '/etc/puppet/hiera.yaml':
+        ensure => present,
+        mode   => 0644,
+        owner  => root,
+        group  => root,
+        source => 'puppet:///modules/vagrant/hiera.yaml',
+      }
+    }
   } else {
     Ini_setting{
       section => 'agent',
