@@ -23,6 +23,7 @@ mod 'example42-php'
 mod 'puppetlabs-dashboard'
 mod 'puppetlabs-puppetdb'
 mod 'puppetlabs-postgresql'
+mod 'theforeman-puppet'
 
 # A module from a git branch/tag
 # mod 'puppetlabs-apt',

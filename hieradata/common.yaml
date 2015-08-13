@@ -1,0 +1,21 @@
+---
+something: something
+
+#classes:
+#  - vagrant
+#  - puppet
+#  - puppetdb
+
+#puppet::server: true
+#puppet::server_foreman: false
+#puppet::server_reports: 'store'
+#puppet::server_external_nodes: ''
+#puppet::server_puppetdb_host: %{::fqdn}
+#puppet::server_puppetdb_host: localhost
+
+#puppetdb::node_purge_ttl: '2d'
+#puppetdb::node_ttl: '2d'
+#puppetdb::listen_address: '0.0.0.0'
+#puppetdb::manage_storeconfigs: true
+#puppetdb::restart_puppet: true
+

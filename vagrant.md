@@ -7,22 +7,9 @@ This will give you a puppet master and two clients so you can test you puppet co
 
 vagrant up
 
-Wait for the pupet box to fail.
-
-vagrant ssh puppet
-sudo -s
-yum remove puppetdb
-rm -rf /etc/puppetdb
-
-Exit the puppet vm and then
-vagrant provision puppet
-
-This will get the puppet master to work
-
-vagrant up
-
-Will bring up both clients.  You will then need to go onto each client and sign certificates.  But other than that, 'puppet agent --test' works as normal on each client.
+Will bring up the puppet master and both clients.  You will then need to go onto each client and sign certificates.  But other than that, 'puppet agent --test' works as normal on each client.
 
 [*TODO*]
 Autosign certificates
-Fix puppetmaster start up so 'vagrant provision' works correctly.
+Fix puppetmaster start up so 'vagrant provision' works correctly. - Done 13/8/15
+Intergrate the vagrant module into hiera and the puppet module.  Gole is to have this built all from hiera with out needing a vagrant module.

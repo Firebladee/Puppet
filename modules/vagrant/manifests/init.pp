@@ -9,7 +9,10 @@ class vagrant {
   }
 
   if $hostname == 'puppet' {
-    package { 'puppet-server': ensure => installed, }
+    package { 'puppet-server':
+      ensure => installed,
+  }
+
     class { 'puppetdb':
       node_purge_ttl => '2d',
       node_ttl       => '2d',
@@ -19,8 +22,9 @@ class vagrant {
       restart_puppet => false,
     }
     service {'puppetmaster':
-      ensure => running,
-      enable => true,
+      ensure  => running,
+      enable  => true,
+      require => Package['puppet-server'],
     }
 
     Ini_setting{
