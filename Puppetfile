@@ -3,19 +3,24 @@
 
 forge "https://forgeapi.puppetlabs.com"
 
+# Currently working behind proxy so having to use https
+
 mod 'puppetlabs-apache'
 mod 'puppetlabs-apt'
 mod 'puppetlabs-stdlib'
 mod 'puppetlabs-concat'
-mod 'Firebladee-check_mk',
-  :git => 'git@github.com:Firebladee/check_mk.git'
-mod 'Firebladee-omd',
-  :git => 'git@github.com:Firebladee/omd.git'
+#mod 'Firebladee-check_mk',
+#  :git => 'git@github.com:Firebladee/check_mk.git'
+#  :git => 'https://github.com/Firebladee/check_mk.git'
+#mod 'Firebladee-omd',
+#  :git => 'git@github.com:Firebladee/omd.git'
+#  :git => 'https://github.com/Firebladee/omd.git'
 mod 'AlexCline-dirtree'
 mod 'puppetlabs-firewall'
 mod 'puppetlabs-inifile'
-mod 'Firebladee-moodle',
-  :git => 'git@github.com:Firebladee/moodle.git'
+#mod 'Firebladee-moodle',
+#  :git => 'git@github.com:Firebladee/moodle.git'
+#  :git => 'https://github.com/Firebladee/moodle.git'
 mod 'puppetlabs-mysql'
 mod 'maestrodev-wget'
 mod 'puppetlabs-mysql'

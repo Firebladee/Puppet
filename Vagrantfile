@@ -4,8 +4,9 @@
 domain = 'example.com'
 
 puppet_nodes = [
-  {:hostname => 'puppet', :ip => '172.16.32.10', :box => 'centos-65-x64-virtualbox-puppet', :fwdhost => 8140, :fwdguest => 8140, :ram => 512},
-  {:hostname => 'client1', :ip => '172.16.32.11', :box => 'centos-65-x64-virtualbox-puppet', :web => 4567},
+  {:hostname => 'puppet', :ip => '172.16.32.10', :box => 'puppetlabs/centos-6.6-64-puppet', :fwdhost => 8140, :fwdguest => 8140, :ram => 512},
+  {:hostname => 'client1', :ip => '172.16.32.11', :box => 'puppetlabs/centos-6.6-64-puppet', :web => 4567},
+  {:hostname => 'client2', :ip => '172.16.32.12', :box => 'puppetlabs/centos-6.6-64-puppet', :web => 4568},
   {:hostname => 'client2', :ip => '172.16.32.12', :box => 'centos-65-x64-virtualbox-puppet', :web => 4568},
 ]
 
@@ -19,7 +20,7 @@ Vagrant.configure("2") do |config|
   puppet_nodes.each do |node|
     config.vm.define node[:hostname] do |node_config|
       node_config.vm.box = node[:box]
-      node_config.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/' + node_config.vm.box + '.box'
+#      node_config.vm.box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/' + node_config.vm.box + '.box'
       node_config.vm.hostname = node[:hostname] + '.' + domain
       node_config.vm.network :private_network, ip: node[:ip]
 
@@ -42,9 +43,11 @@ Vagrant.configure("2") do |config|
       end
 
       node_config.vm.provision :puppet do |puppet|
-        puppet.manifests_path    = 'manifests'
+#        puppet.manifests_path    = 'manifests'
+        puppet.environment       = "dev"
+        puppet.environment_path  = 'environment'
         puppet.module_path       = 'modules'
-        puppet.manifest_file     = "site.pp"
+#        puppet.manifest_file     = "site.pp"
         puppet.hiera_config_path = "hiera.yaml"
         puppet.options           = "--show_diff"
 #        puppet.options        = "--verbose --debug"
