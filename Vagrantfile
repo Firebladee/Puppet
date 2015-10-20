@@ -4,18 +4,26 @@
 domain = 'example.com'
 
 puppet_nodes = [
-  {:hostname => 'puppet', :ip => '172.16.32.10', :box => 'puppetlabs/centos-6.6-64-puppet', :fwdhost => 8140, :fwdguest => 8140, :ram => 512},
+  {:hostname => 'puppet', :ip => '172.16.32.10', :box => 'puppetlabs/centos-6.6-64-puppet', :fwdhost => 8140, :fwdguest => 8140, :ram => 1024},
   {:hostname => 'client1', :ip => '172.16.32.11', :box => 'puppetlabs/centos-6.6-64-puppet', :web => 4567},
   {:hostname => 'client2', :ip => '172.16.32.12', :box => 'puppetlabs/centos-6.6-64-puppet', :web => 4568},
   {:hostname => 'client2', :ip => '172.16.32.12', :box => 'centos-65-x64-virtualbox-puppet', :web => 4568},
 ]
 
 Vagrant.configure("2") do |config|
-  if Vagrant.has_plugin?("vagrant-proxyconf")
-    config.proxy.http     = 'http://10.28.105.210:1234/'
-    config.proxy.https    = 'https://10.28.105.210:1234/'
-    config.proxy.no_proxy = 'localhost,127.0.0.1,.' + domain
-  end
+#  if Vagrant.has_plugin?("vagrant-proxyconf")
+#    config.proxy.http     = 'http://10.28.105.210:1234/'
+#    config.proxy.https    = 'https://10.28.105.210:1234/'
+#    config.proxy.no_proxy = 'localhost,127.0.0.1,.' + domain
+#  end
+
+#  if Vagrant.has_plugin?("vagrant-cachier")
+#    config.cache.scope = :box
+#    config.cache.synced_folder_opts = {
+#      type: :nfs,
+#      mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
+#    }
+#  end
 
   puppet_nodes.each do |node|
     config.vm.define node[:hostname] do |node_config|
@@ -38,7 +46,7 @@ Vagrant.configure("2") do |config|
         vb.customize [
           'modifyvm', :id,
           '--name', node[:hostname],
-          '--memory', memory.to_s
+          '--memory', memory
         ]
       end
 
@@ -49,7 +57,7 @@ Vagrant.configure("2") do |config|
         puppet.module_path       = 'modules'
 #        puppet.manifest_file     = "site.pp"
         puppet.hiera_config_path = "hiera.yaml"
-        puppet.options           = "--show_diff"
+#        puppet.options           = "--show_diff"
 #        puppet.options        = "--verbose --debug"
       end
     end

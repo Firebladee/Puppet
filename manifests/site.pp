@@ -1,9 +1,9 @@
 # /etc/puppet/manifests/site.pp
 
-import "modules"
-import "nodes"
+#import "modules"
+#import "nodes"
 
-filebucket { main: server => "puppettest.internal.londonit.org" }
+filebucket { main: server => "puppet.example.com" }
 
 # global defaults
 File { backup => main }
@@ -15,4 +15,8 @@ Package {
 		centos => yum,
 		fedora => yum
 	}
+
+hiera_include('classes')
+
+node default {}
 }

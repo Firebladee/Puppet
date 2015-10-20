@@ -1,0 +1,21 @@
+---
+#classes:
+#  - puppetdb::server
+
+puppet::server: true
+puppet::server_foreman: false
+puppet::server_reports: 'store'
+puppet::server_external_nodes: ''
+#puppet::server_puppetdb_host: "%{::fqdn}"
+#puppet::storeconfigs: true
+#puppet::storeconfigs_backend: 'puppetdb'
+puppet::user: 'root'
+puppet::group: 'root'
+puppet::server_user: 'root'
+
+puppetdb::node_purge_ttl: '2d'
+puppetdb::node_ttl: '2d'
+puppetdb::listen_address: '0.0.0.0'
+puppetdb::manage_storeconfigs: true
+puppetdb::restart_puppet: false
+

@@ -4,4 +4,5 @@
 :yaml:
   :datadir: /vagrant/hieradata
 :hierarchy:
+  - hosts/%{::hostname}
   - common

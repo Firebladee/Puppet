@@ -1,21 +1,18 @@
 ---
-something: something
+classes:
+  - vagrant
+#  - yum
+#  - yum::repo::epel
+#  - yum::repo::puppetlabs
+  - puppet
 
-#classes:
-#  - vagrant
-#  - puppet
-#  - puppetdb
+#yum::extrarepo: ''
 
-#puppet::server: true
-#puppet::server_foreman: false
-#puppet::server_reports: 'store'
-#puppet::server_external_nodes: ''
-#puppet::server_puppetdb_host: %{::fqdn}
-#puppet::server_puppetdb_host: localhost
+#yum::repo_dir: '/etc/yum.repos.d'
 
-#puppetdb::node_purge_ttl: '2d'
-#puppetdb::node_ttl: '2d'
-#puppetdb::listen_address: '0.0.0.0'
-#puppetdb::manage_storeconfigs: true
-#puppetdb::restart_puppet: true
-
+#yum::source_repo_dir: 'puppet:///modules/yum/empty'
+#yum::source_dir: 'puppet:///modules/yum/empty'
+#yum::clean_repos: false
+#yum::extrarepo:
+#  - epel
+#  - puppetlabs

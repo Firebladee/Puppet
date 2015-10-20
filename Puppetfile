@@ -12,8 +12,8 @@ mod 'puppetlabs-concat'
 #mod 'Firebladee-check_mk',
 #  :git => 'git@github.com:Firebladee/check_mk.git'
 #  :git => 'https://github.com/Firebladee/check_mk.git'
-#mod 'Firebladee-omd',
-#  :git => 'git@github.com:Firebladee/omd.git'
+mod 'Firebladee-omd',
+  :git => 'git@github.com:Firebladee/omd.git'
 #  :git => 'https://github.com/Firebladee/omd.git'
 mod 'AlexCline-dirtree'
 mod 'puppetlabs-firewall'
@@ -29,6 +29,7 @@ mod 'puppetlabs-dashboard'
 mod 'puppetlabs-puppetdb'
 mod 'puppetlabs-postgresql'
 mod 'theforeman-puppet'
+mod 'example42-yum'
 
 # A module from a git branch/tag
 # mod 'puppetlabs-apt',

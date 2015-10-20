@@ -1,0 +1,10 @@
+---
+classes:
+  - omd::install
+  - omd::site::add
+  - check_mk
+
+omd::omd_site: 'test'
+check_mk::install: 'server'
+check_mk::omd_site: 'test'
+

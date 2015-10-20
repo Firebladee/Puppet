@@ -8,60 +8,73 @@ class vagrant {
     content => template('vagrant/hosts.erb'),
   }
 
-  if $hostname == 'puppet' {
-    package { 'puppet-server':
-      ensure => installed,
-  }
+#  if ($hostname == 'puppet') and ($clientversion < '4') {
+#    $package = 'puppet-server'
+#    $server = 'puppetmaster'
+#    $path = '/etc/puppet'
+#    $module = 'modulepath'
+#  }
+#  else {
+#    $package = 'puppetserver'
+#    $server = 'puppetserver'
+#    $path = '/etc/puppetlabs/puppet'
+#    $module = 'basemodulepath'
+#  }
 
-    class { 'puppetdb':
-      node_purge_ttl => '2d',
-      node_ttl       => '2d',
-      listen_address => '0.0.0.0',
-    }
-    class { 'puppetdb::master::config':
-      restart_puppet => false,
-    }
-    service {'puppetmaster':
-      ensure  => running,
-      enable  => true,
-      require => Package['puppet-server'],
-    }
+#  if $hostname == 'puppet' {
+#    package { $package :
+#      ensure => installed,
+#    }
 
-    Ini_setting{
-      section => 'main',
-      path    => '/etc/puppet/puppet.conf',
-      ensure  => present,
-    }
-    ini_setting { 'puppet.conf/main/modulepath':
-      setting => 'modulepath',
-      value   => '/vagrant/modules',
-    }
-    ini_setting { 'puppet.conf/main/manifestdir':
-      setting => 'manifestdir',
-      value   => '/vagrant/manifests',
-    }
-    ini_setting { 'puppet.conf/main/server':
-      setting => 'server',
-      value   => 'puppet.example.com',
-    }
-    if $::virtual == 'virtualbox' {
-      file { '/etc/puppet/hiera.yaml':
-        ensure => present,
-        mode   => 0644,
-        owner  => root,
-        group  => root,
-        source => 'puppet:///modules/vagrant/hiera.yaml',
-      }
-    }
-  } else {
-    Ini_setting{
-      section => 'agent',
-      path    => '/etc/puppet/puppet.conf',
-      ensure  => present,
-    }
-    ini_setting { 'puppet.conf/main/server':
-      setting => 'server',
-      value   => 'puppet.example.com',
-    }
-  }
+#    class { 'puppetdb':
+#      node_purge_ttl => '2d',
+#      node_ttl       => '2d',
+#      listen_address => '0.0.0.0',
+#    }
+#    class { 'puppetdb::master::config':
+#      restart_puppet => false,
+#    }
+#    service { $server :
+#      ensure  => running,
+#      enable  => true,
+#      require => Package[$package],
+#    }
+
+#    Ini_setting{
+#      section => 'main',
+#      path    => "${path}/puppet.conf",
+#      ensure  => present,
+#    }
+#    ini_setting { 'puppet.conf/main/modulepath':
+#      setting => $module,
+#      value   => '/vagrant/modules',
+#    }
+#    ini_setting { 'puppet.conf/main/manifestdir':
+#      setting => 'manifestdir',
+#      value   => '/vagrant/manifests',
+#    }
+#    ini_setting { 'puppet.conf/main/server':
+#      setting => 'server',
+#      value   => 'puppet.example.com',
+#    }
+#    if $::virtual == 'virtualbox' {
+#      file { "${path}/hiera.yaml":
+#        ensure => present,
+#        mode   => '0644',
+#        owner  => root,
+#        group  => root,
+#        source => 'puppet:///modules/vagrant/hiera.yaml',
+#      }
+#    }
+#  } else {
+#    Ini_setting{
+#      section => 'agent',
+#      path    => "${path}/puppet.conf",
+#      ensure  => present,
+#    }
+#    ini_setting { 'puppet.conf/main/server':
+#      setting => 'server',
+#      value   => 'puppet.example.com',
+#    }
+#  }
 }
